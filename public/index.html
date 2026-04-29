@@ -1,4 +1,4 @@
-<!doctype html><html lang=en><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>ProxyForge v4.0 - Advanced Web Extractor</title><script src=https://cdn.tailwindcss.com></script><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js></script><style>:root{--red:#dc2626;--red-dark:#991b1b;--red-bright:#ef4444;--bg:#030712;--bg2:#0a0a0f;--bg3:#111827;--border:#1f2937;--text:#e5e7eb;--muted:#6b7280}*{box-sizing:border-box}::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:#0a0a0f}::-webkit-scrollbar-thumb{background:#dc2626;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#ef4444}body{background:radial-gradient(ellipse 120% 80% at 50% -10%,#1a0000 0%,#030712 60%);min-height:100vh;font-family:'Courier New',monospace;color:var(--text)}
+<!doctype html><html lang=en><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>ProxyForge v4.1 - Advanced Web Extractor</title><script src=https://cdn.tailwindcss.com></script><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js></script><style>:root{--red:#dc2626;--red-dark:#991b1b;--red-bright:#ef4444;--bg:#030712;--bg2:#0a0a0f;--bg3:#111827;--border:#1f2937;--text:#e5e7eb;--muted:#6b7280}*{box-sizing:border-box}::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:#0a0a0f}::-webkit-scrollbar-thumb{background:#dc2626;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#ef4444}body{background:radial-gradient(ellipse 120% 80% at 50% -10%,#1a0000 0%,#030712 60%);min-height:100vh;font-family:'Courier New',monospace;color:var(--text)}
 .nav-scroll{display:flex;overflow-x:auto;gap:.25rem;padding-bottom:.25rem;scrollbar-width:thin;scrollbar-color:#dc2626 #0a0a0f}.nav-tab{flex-shrink:0;padding:.4rem .9rem;border-radius:.4rem;font-size:.72rem;font-weight:600;letter-spacing:.04em;border:1px solid transparent;cursor:pointer;transition:all .2s;background:transparent;color:#6b7280;text-transform:uppercase;white-space:nowrap}.nav-tab:hover{color:#e5e7eb;border-color:#374151;background:#111827}.nav-tab.active{color:#ef4444;border-color:#dc2626;background:rgba(220,38,38,.12)}
 .page-content{display:none}.page-content.active{display:block}
 .card{background:rgba(10,10,15,.8);border:1px solid #1f2937;border-radius:.6rem;padding:1.25rem;backdrop-filter:blur(8px)}.card-sm{background:rgba(10,10,15,.6);border:1px solid #1f2937;border-radius:.5rem;padding:.85rem}
@@ -23,7 +23,7 @@ input[type=url]{font-family:'Courier New',monospace}
 <header class="text-center mb-6 pt-4">
 <div class="inline-flex items-center gap-3 mb-2">
 <div class="w-8 h-8 bg-red-700 rounded-lg flex items-center justify-center shine"><i class="fas fa-bolt text-white text-sm"></i></div>
-<h1 class="text-2xl md:text-3xl font-black text-white tracking-tight">PROXY<span class="text-red-500">FORGE</span> <span class="text-xs text-gray-500 font-mono ml-1">v4.0</span></h1>
+<h1 class="text-2xl md:text-3xl font-black text-white tracking-tight">PROXY<span class="text-red-500">FORGE</span> <span class="text-xs text-gray-500 font-mono ml-1">v4.1</span></h1>
 </div>
 <p class="text-gray-500 text-xs font-mono tracking-widest uppercase">Advanced Web Extraction · Analysis · Intelligence</p>
 </header>
@@ -58,6 +58,8 @@ input[type=url]{font-family:'Courier New',monospace}
 <button class="nav-tab" data-page=structure><i class="fas fa-sitemap mr-1"></i>Structure</button>
 <button class="nav-tab" data-page=performance><i class="fas fa-tachometer-alt mr-1"></i>Performance</button>
 <button class="nav-tab" data-page=cleaned><i class="fas fa-broom mr-1"></i>Cleaned</button>
+<button class="nav-tab" data-page=bot><i class="fas fa-robot mr-1"></i>Bot/WAF</button>
+<button class="nav-tab" data-page=ai><i class="fas fa-brain mr-1"></i>AI Detect</button>
 <button class="nav-tab" data-page=source><i class="fas fa-code mr-1"></i>Source</button>
 <button class="nav-tab" data-page=preview><i class="fas fa-desktop mr-1"></i>Preview</button>
 </div>
@@ -246,6 +248,41 @@ input[type=url]{font-family:'Courier New',monospace}
 </div>
 </div>
 
+<!-- BOT/WAF -->
+<div id=bot-page class="page-content">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+<div class="card flex flex-col items-center text-center">
+<div class="text-4xl mb-3" id=bot-icon>🤖</div>
+<div class="text-white font-black text-lg" id=bot-bypass></div>
+<div class="text-xs text-gray-500 font-mono mt-1">Bypass Difficulty</div>
+<div class="flex gap-2 mt-3 flex-wrap justify-center" id=bot-badges></div>
+</div>
+<div class="card md:col-span-2">
+<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-shield-virus text-red-500"></i>Protection Signals</h3>
+<div id=bot-signals class="space-y-2 max-h-80 overflow-y-auto"></div>
+</div>
+</div>
+<div class="card">
+<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-server text-blue-500"></i>Response Headers</h3>
+<div id=bot-headers class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 max-h-64 overflow-y-auto"></div>
+</div>
+</div>
+
+<!-- AI DETECTION -->
+<div id=ai-page class="page-content">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+<div class="card flex flex-col items-center text-center">
+<div class="score-ring mb-3" id=ai-ring></div>
+<div class="text-xs text-gray-400 font-mono uppercase tracking-wider">AI Likelihood</div>
+<div class="text-xs mt-2 font-mono font-bold" id=ai-verdict></div>
+</div>
+<div class="card md:col-span-2">
+<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-brain text-purple-500"></i>AI Content Signals</h3>
+<div id=ai-signals class="space-y-2 max-h-80 overflow-y-auto"></div>
+</div>
+</div>
+</div>
+
 <!-- SOURCE -->
 <div id=source-page class="page-content">
 <div class="card">
@@ -310,13 +347,18 @@ input[type=url]{font-family:'Courier New',monospace}
 </div>
 
 <script>
-const DOC_MD=`# ProxyForge v4.0 Documentation
+const DOC_MD=`# ProxyForge v4.1 Documentation
 
 > **Advanced Web Extraction, Analysis & Intelligence Platform**
 
-## Overview
+## What's New in v4.1
 
-ProxyForge is a powerful server-side CORS proxy that fetches, processes, and deeply analyzes web pages. It removes ads, trackers, security restrictions, and rewrites all links to route through itself — enabling seamless browsing, deep inspection, and comprehensive reporting on any public webpage.
+- **Own Visual Extraction Engine** — No external APIs. Logo, OG image, favicon, CSS color palette, and screenshot all extracted server-side or via lightweight free thumbnail services
+- **Bot / WAF Detection** — Detects Cloudflare, AWS WAF, Sucuri, Akamai, Fastly, reCAPTCHA, hCaptcha, Turnstile, DataDome, PerimeterX, Kasada, Imperva, rate limiting, and tracking cookies
+- **AI Content Detection** — Linguistic pattern analysis, tool mention scanning, schema markup inspection, sentence length heuristics, and likelihood scoring
+- **Universal Preview Overlay** — Every image, video, audio, iframe, and resource URL is clickable for inline preview with smart YouTube/Vimeo embed rewriting
+- **Smart URL Truncation** — Long URLs displayed as \`start…end\` with full URL in tooltip, never overflowing the UI
+- **Response Headers Inspector** — Full response header dump shown in Bot/WAF tab
 
 ---
 
@@ -324,23 +366,19 @@ ProxyForge is a powerful server-side CORS proxy that fetches, processes, and dee
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | \`/api/proxy?url=\` | Returns processed HTML (links rewritten to proxy) |
-| GET | \`/api/html/proxy?url=\` | Returns processed HTML wrapped in JSON |
-| GET | \`/api/json/proxy?url=\` | Returns full JSON analysis report |
-| POST | \`/api/proxy\` | Same as GET but URL in request body |
-| POST | \`/api/html/proxy\` | Same as GET /html but POST body |
-| POST | \`/api/json/proxy\` | Same as GET /json but POST body |
-| GET | \`/api/health\` | Health check and server metrics |
-| GET | \`/api/docs\` | API documentation (JSON) |
+| GET | \`/api/proxy?url=\` | Processed HTML with links rewritten to proxy |
+| GET | \`/api/html/proxy?url=\` | Processed HTML in JSON wrapper |
+| GET | \`/api/json/proxy?url=\` | Full JSON analysis report |
+| POST | \`/api/proxy\` | Same as GET, URL in body |
+| POST | \`/api/html/proxy\` | Same as GET /html, URL in body |
+| POST | \`/api/json/proxy\` | Same as GET /json, URL in body |
+| GET | \`/api/health\` | Health check, uptime, memory |
+| GET | \`/api/docs\` | API documentation JSON |
 
-### Example Usage
+### Example
 
 \`\`\`bash
-# Get full analysis JSON
 curl "https://your-domain.com/api/json/proxy?url=https://example.com"
-
-# Get processed HTML
-curl "https://your-domain.com/api/proxy?url=https://example.com"
 \`\`\`
 
 ---
@@ -352,22 +390,19 @@ curl "https://your-domain.com/api/proxy?url=https://example.com"
   "success": true,
   "url": "https://example.com",
   "status": 200,
-  "statusText": "OK",
-  "contentType": "text/html; charset=utf-8",
   "responseTime": 423,
-  "size": {
-    "original": 85234,
-    "processed": 81000,
-    "compression": "4.97%"
-  },
-  "metadata": { ... },
-  "analysis": { ... },
-  "technologies": [ ... ],
-  "seo": { ... },
-  "security": { ... },
-  "accessibility": { ... },
-  "adsRemoved": { "removed": [...], "trackers": [...], "totalCleaned": 12 },
-  "microlink": { ... },
+  "size": { "original": 85234, "processed": 81000, "compression": "4.97%" },
+  "metadata": {},
+  "analysis": {},
+  "visualData": {},
+  "technologies": [],
+  "seo": {},
+  "security": {},
+  "accessibility": {},
+  "botProtection": {},
+  "aiContent": {},
+  "adsRemoved": {},
+  "responseHeaders": {},
   "contents": "<html>...</html>",
   "timestamp": "2025-01-01T00:00:00.000Z",
   "requestId": "abc123"
@@ -378,57 +413,79 @@ curl "https://your-domain.com/api/proxy?url=https://example.com"
 
 ## Analysis Modules
 
-### Metadata Extraction
-Extracts all standard and Open Graph meta tags including title, description, keywords, author, OG image, Twitter card data, favicon, canonical URL, robots directives, language, charset, viewport, generator, theme color, RSS/Atom feeds, and web manifests.
+### Visual Extraction (Own Engine)
+Extracts without any third-party API:
+- **Logo** — Heuristic search via \`img[src*="logo"]\`, header/nav/brand selectors
+- **OG Image** — From \`og:image\` and \`twitter:image\` meta tags
+- **Favicon** — From \`link[rel="icon"]\` and fallback \`/favicon.ico\`
+- **Color Palette** — CSS \`#rrggbb\` hex extraction from inline styles and \`<style>\` blocks, plus \`theme-color\` meta
+- **Screenshot** — Via \`image.thum.io\` (free, no API key)
+- **Attribution** — Publisher, author, publication date from meta tags
+
+### Bot / WAF Detection
+Analyzes response headers and HTML patterns to identify:
+
+| Protection | Detection Method |
+|-----------|-----------------|
+| Cloudflare | \`cf-ray\` header, \`__cf_bm\` cookie, HTML patterns |
+| AWS CloudFront | \`x-amzn-requestid\`, \`x-amz-cf-id\` headers |
+| Sucuri WAF | \`x-sucuri-id\` header, HTML marker |
+| Akamai | \`x-akamai-request-id\` header |
+| Fastly CDN | \`x-fastly-request-id\` header |
+| Varnish Cache | \`x-varnish\`, \`via\` headers |
+| Google reCAPTCHA | \`g-recaptcha\` class/script in HTML |
+| hCaptcha | \`hcaptcha\` script reference |
+| Cloudflare Turnstile | \`cf-turnstile\` element or script |
+| DataDome | \`datadome\` script reference |
+| PerimeterX | \`px-captcha\` element or script |
+| Kasada | \`kasada\` script reference |
+| Imperva | \`incapsula\` script/cookie |
+| Rate Limiting | \`x-ratelimit-limit\`, \`retry-after\` headers |
+
+**Bypass Difficulty Score**: Easy / Moderate / Hard / Very Hard based on combined active protection count.
+
+### AI Content Detection
+Scores 0–100 likelihood that content is AI-generated:
+
+- **Declaration** — Explicit "AI-generated" labels
+- **Tool Mentions** — ChatGPT, GPT-4, Claude, Gemini, Perplexity, Copilot references
+- **Linguistic Patterns** — "As an AI", "certainly!", "great question", "in conclusion", "it's worth noting"
+- **Sentence Length** — Avg >25 words/sentence correlates with AI verbosity
+- **Schema Markup** — \`AIContent\` type or \`generator\` field in JSON-LD
 
 ### SEO Analysis
-- **Score**: 0–100 composite score
-- Checks: Title length (50–60 chars optimal), meta description (150–160 chars), H1 presence, image alt attributes, canonical URL, Open Graph image, robots directives, render-blocking fonts
+Scored 0–100. Checks: title length (50–60 optimal), meta description (150–160), H1 presence/uniqueness, image alt attributes, canonical URL, OG image, robots directives, render-blocking resources.
 
 ### Security Analysis
-Detects: HSTS header, Content Security Policy, X-Frame-Options (clickjacking), X-Content-Type-Options, mixed HTTP/HTTPS content, form action security, inline JavaScript risks, innerHTML usage
+Checks: HSTS, Content Security Policy, X-Frame-Options, X-Content-Type-Options, mixed content, form HTTP actions, \`document.write()\`, \`innerHTML\` assignment.
 
 ### Accessibility (A11y)
-Checks: Image alt attributes, input labels, HTML lang attribute, main/nav landmark elements, empty anchor links, ARIA attributes
+Checks: image alts, input labels, \`html[lang]\`, main/nav landmarks, empty anchors, ARIA attributes.
 
 ### Technology Detection
-Identifies: WordPress, Shopify, Wix, Squarespace, Drupal, Joomla, Gatsby, Next.js, Nuxt.js, React, Vue.js, Angular, jQuery, Bootstrap, Tailwind CSS, Google Analytics, GTM, Hotjar, Intercom, Cloudflare, Google Fonts, Font Awesome
+Identifies 20+ frameworks: WordPress, Shopify, Wix, Squarespace, Drupal, Joomla, Gatsby, Next.js, Nuxt.js, React, Vue.js, Angular, jQuery, Bootstrap, Tailwind CSS, Google Analytics, GTM, Hotjar, Intercom, Cloudflare, Google Fonts, Font Awesome.
 
 ### Ad & Tracker Removal
-- **Ad Selectors**: 40+ CSS selectors targeting AdSense, DoubleClick, Taboola, Outbrain, Criteo, Rubicon, and more
-- **Tracker Patterns**: 30+ regex patterns blocking Google Analytics, Facebook Pixel, Hotjar, Clarity, Mixpanel, Segment, Heap, FullStory, HubSpot, and more
-- **Inline Scripts**: Removes ad-injecting inline script blocks
-- **Ad Iframes**: Removes DoubleClick and ad network iframes
-
-### Resource Extraction
-Collects all: images (content, responsive, social, icons), internal/external links, scripts (inline & external), stylesheets, media files, embedded iframes
-
-### Media & Iframe Detection
-Video files, audio files, and iframe embeds are detected and categorized. YouTube, Vimeo, Google Maps, and social embeds are labeled. All media can be previewed directly in the Media tab overlay.
+- **40+ CSS selectors** — AdSense, Taboola, Outbrain, Criteo, Rubicon, DoubleClick, OpenX, AppNexus, and more
+- **30+ tracker regex patterns** — GA, Facebook Pixel, Hotjar, Clarity, Mixpanel, Segment, Heap, FullStory, HubSpot, and more
+- **Inline script removal** — \`googletag\`, \`adsbygoogle\`, \`_gaq\` script blocks
+- **Ad iframes** — DoubleClick, googlesyndication iframes removed
 
 ---
 
 ## Link Rewriting
 
-All \`href\` attributes on \`<a>\` tags are rewritten to:
+All \`<a href>\` attributes rewritten to:
 \`\`\`
 /api/proxy?url=https://original-link.com/path
 \`\`\`
-This ensures browsing within the Preview tab stays proxied, maintaining CORS bypass and ad-free browsing across navigations.
+Preview tab browsing stays fully proxied across navigations.
 
 ---
 
 ## Security Processing
 
-The following HTTP-equiv meta tags and response headers are neutralized:
-- \`Content-Security-Policy\`
-- \`X-Frame-Options\`
-- \`X-Content-Type-Options\`
-- \`Strict-Transport-Security\`
-- \`Referrer-Policy\`
-- \`Permissions-Policy\`
-
-A permissive CSP (\`frame-ancestors *\`) is injected to allow embedding.
+Neutralized: \`Content-Security-Policy\`, \`X-Frame-Options\`, \`X-Content-Type-Options\`, \`Strict-Transport-Security\`, \`Referrer-Policy\`, \`Permissions-Policy\`. Injected: \`frame-ancestors *\` CSP to allow embedding.
 
 ---
 
@@ -436,61 +493,49 @@ A permissive CSP (\`frame-ancestors *\`) is injected to allow embedding.
 
 | Tab | Description |
 |-----|-------------|
-| **Overview** | Status, payload size, response timing, quick stats |
-| **Visual** | Screenshot, logo, color palette via Microlink |
-| **Metadata** | All extracted meta tags |
-| **Resources** | Full filterable/searchable resource table |
-| **Media** | Video/audio/iframe viewer with overlay player |
-| **SEO** | Score, issues, warnings, key field values |
-| **Security** | Security header findings with severity |
-| **A11y** | Accessibility score and checks |
-| **Technologies** | Detected stack and tools |
-| **Social** | Social media link counts |
-| **Structure** | Headings, links, forms breakdown |
-| **Performance** | DOM metrics, script/style counts |
-| **Cleaned** | Ads and trackers that were removed |
-| **Source** | Processed HTML source with syntax highlight |
-| **Preview** | Live iframe with all links auto-proxied |
+| Overview | Status, size, timing, quick stats |
+| Visual | Screenshot, logo, OG image, favicon, color palette |
+| Metadata | All extracted meta tags |
+| Resources | Filterable/searchable resource table — click any item to preview |
+| Media | Video/audio/iframe viewer — click to open overlay player |
+| SEO | Score ring, issues/warnings/passes |
+| Security | Header finding severity levels |
+| A11y | Accessibility score and checks |
+| Technologies | Detected stack grouped by category |
+| Social | Social media link counts |
+| Structure | Headings, links, forms breakdown |
+| Performance | DOM metrics, script/style counts |
+| Cleaned | All removed ads and blocked trackers |
+| Bot/WAF | Protection signals, bypass difficulty, response headers |
+| AI Detect | AI content likelihood score and signals |
+| Source | Syntax-highlighted processed HTML |
+| Preview | Live iframe with auto-proxied links |
 
 ---
 
-## Microlink Integration
+## Universal Preview Overlay
 
-ProxyForge optionally queries \`api.microlink.io\` to obtain:
-- **Screenshot**: Full-page screenshot URL
-- **Logo**: Site logo URL
-- **Palette**: Dominant color palette (hex array)
-- **Publisher, Author, Date**: Enriched content metadata
+Clicking any resource, image, video, audio, or iframe URL opens the overlay:
+- **Images** — Full-size display with object-contain scaling
+- **Videos** — Native HTML5 \`<video>\` player with controls
+- **Audio** — Native \`<audio>\` player
+- **YouTube** — Auto-converted to \`/embed/\` URL
+- **Vimeo** — Auto-converted to \`player.vimeo.com\`
+- **Other iframes** — Embedded directly
+- **Other files** — "Open in new tab" fallback
 
-This runs in parallel with page fetching and gracefully degrades if unavailable.
-
----
-
-## Configuration
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| \`PORT\` | 3000 | Server port |
+URL display uses **start…end truncation** — first 30 chars + last 25 chars — with full URL in tooltip.
 
 ---
 
 ## Stack
 
-- **Runtime**: Node.js ≥ 18
-- **Framework**: Express 4
-- **HTML Parsing**: Cheerio (jQuery-like server-side DOM)
-- **HTTP Client**: Axios with redirect following
-- **CORS**: cors middleware
-- **Proxy**: Transparent URL rewriting with absolute URL resolution
-
----
-
-## Limitations
-
-- JavaScript-rendered SPAs may not show dynamic content (server-side HTML only)
-- Some sites block server-side requests (Cloudflare, bot protection)
-- Microlink API has rate limits on free tier
-- Media DRM content cannot be proxied
+- **Runtime**: Node.js ≥ 18  
+- **Framework**: Express 4  
+- **HTML Parsing**: Cheerio  
+- **HTTP Client**: Axios  
+- **Screenshot**: image.thum.io (free, no key)  
+- **No external paid APIs required**
 `;
 
 let allResources=[],currentUrl='',apiBase=window.location.origin;
@@ -514,18 +559,19 @@ function statCard(icon,color,label,val){return`<div class="card flex items-cente
 function kvRow(label,val,color='#9ca3af'){return`<div class="flex justify-between items-center py-1.5 border-b border-gray-900"><span class="text-xs text-gray-500 font-mono">${label}</span><span class="text-xs font-mono" style="color:${color}">${val}</span></div>`}
 function progressRow(label,val,max,color){const pct=Math.min(100,max>0?(val/max)*100:0);return`<div><div class="flex justify-between text-xs mb-1"><span class="text-gray-500 font-mono">${label}</span><span style="color:${color}">${val}</span></div><div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${color}"></div></div></div>`}
 
-function openMediaOverlay(url,type,title){
-  $('mo-title').textContent=title||type;$('mo-url').textContent=url;$('mo-open').href=url;
+function openPreview(url,type,title){
+  $('mo-title').textContent=title||type;
+  const display=url.length>60?url.slice(0,30)+'…'+url.slice(-25):url;
+  $('mo-url').textContent=display;$('mo-url').title=url;$('mo-open').href=url;
   let player='';
-  if(type==='video')player=`<video controls class="w-full rounded-lg max-h-96 bg-black" src="${escHtml(url)}"><p class="text-gray-400 text-sm">Your browser does not support this video.</p></video>`;
-  else if(type==='audio')player=`<audio controls class="w-full" src="${escHtml(url)}"><p class="text-gray-400 text-sm">Your browser does not support this audio.</p></audio>`;
-  else if(type==='iframe'){
-    const yt=url.includes('youtube.com')||url.includes('youtu.be');
-    const embedUrl=yt?url.replace('watch?v=','embed/'):url;
-    player=`<iframe src="${escHtml(embedUrl)}" class="w-full rounded-lg" style="height:400px" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" frameborder="0"></iframe>`;
-  }
+  if(type==='image')player=`<img src="${escHtml(url)}" class="max-w-full max-h-[75vh] object-contain rounded-lg border border-gray-800 mx-auto block" loading=lazy onerror="this.insertAdjacentHTML('afterend','<p class=text-red-400>Failed to load image</p>')">`;
+  else if(type==='video'||url.match(/\.(mp4|webm|ogg|mov|avi)(\?|$)/i))player=`<video controls class="w-full rounded-lg max-h-[70vh] bg-black" src="${escHtml(url)}"><p class="text-gray-400 text-sm p-4">Browser cannot play this video. <a href="${escHtml(url)}" target=_blank class="text-red-400 underline">Open directly</a></p></video>`;
+  else if(type==='audio'||url.match(/\.(mp3|wav|ogg|aac|flac)(\?|$)/i))player=`<div class="w-full max-w-2xl mx-auto p-8 card-sm text-center"><i class="fas fa-music text-purple-400 text-4xl mb-4 block"></i><audio controls class="w-full mt-2" src="${escHtml(url)}"></audio></div>`;
+  else if(type==='embed'||type==='iframe'){const ytMatch=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?/]+)/);const embedUrl=ytMatch?`https://www.youtube.com/embed/${ytMatch[1]}`:url.includes('vimeo.com')?url.replace(/vimeo\.com\/(\d+)/,'player.vimeo.com/video/$1'):url;player=`<iframe src="${escHtml(embedUrl)}" class="w-full rounded-lg border border-gray-800" style="height:70vh;min-height:400px" allowfullscreen allow="autoplay;fullscreen;picture-in-picture" frameborder="0"></iframe>`;}
+  else player=`<div class="card-sm text-center p-8"><i class="fas fa-file text-gray-600 text-3xl mb-3 block"></i><div class="text-gray-400 text-sm mb-4">Preview not available for this file type</div><a href="${escHtml(url)}" target=_blank class="badge badge-red">Open in new tab</a></div>`;
   $('mo-player').innerHTML=player;$('media-overlay').classList.remove('hidden');
 }
+function openMediaOverlay(url,type,title){openPreview(url,type,title)}
 function openDoc(){
   $('doc-content').innerHTML=renderMd(DOC_MD);
   $('doc-overlay').classList.remove('hidden');
@@ -581,9 +627,10 @@ function renderResources(list){
   $('res-count').textContent=`(${list.length})`;
   if(!list.length){tbody.innerHTML='<tr><td colspan=5 class="py-6 text-center text-gray-600 font-mono text-xs">No resources found</td></tr>';return}
   tbody.innerHTML=list.map(r=>{
-    const preview=r.type==='image'?`<img src="${escHtml(r.url)}" class="w-10 h-10 object-cover rounded border border-gray-800" loading=lazy onerror="this.style.display='none'">`:`<i class="${r.icon||'fas fa-file'} text-gray-600"></i>`;
+    const preview=r.type==='image'?`<img src="${escHtml(r.url)}" class="w-10 h-10 object-cover rounded border border-gray-800 cursor-pointer hover:opacity-80 transition-opacity" loading=lazy onerror="this.style.display='none'" onclick="event.stopPropagation();openPreview('${escHtml(r.url)}','image','${escHtml(truncate(r.alt||r.url,40))}')" title="Click to preview">`:`<i class="${r.icon||'fas fa-file'} text-gray-600 cursor-pointer hover:text-red-500 transition-colors" onclick="openPreview('${escHtml(r.url)}','${r.type==='media'?'video':r.type}','${escHtml(truncate(r.url,40))}')" title="Click to open"></i>`;
     const typeColor={image:'badge-blue',link:'badge-gray',script:'badge-yellow',stylesheet:'badge-purple',media:'badge-red',embed:'badge-green'}[r.type]||'badge-gray';
-    return`<tr class="resource-row"><td class="py-2 px-2"><span class="badge ${typeColor}">${r.type}</span>${r.subtype?`<br><span class="text-xs text-gray-600 mt-0.5 inline-block">${r.subtype}</span>`:''}</td><td class="py-2 px-2 text-xs text-gray-400 max-w-[150px] truncate" title="${escHtml(r.text||r.alt||r.title||r.type)}">${escHtml(truncate(r.text||r.alt||r.title||r.type,30))}</td><td class="py-2 px-2 text-center">${preview}</td><td class="py-2 px-2 max-w-[200px]"><a href="${escHtml(r.url)}" target=_blank rel="noopener" class="text-red-500 hover:text-red-400 text-xs font-mono truncate block" title="${escHtml(r.url)}">${escHtml(truncate(r.url,45))}</a></td><td class="py-2 px-2 text-center"><button onclick="copyText('${escHtml(r.url)}')" class="badge badge-gray cursor-pointer text-xs hover:border-gray-500"><i class="fas fa-copy"></i></button></td>`;
+    const urlDisp=r.url.length>55?r.url.slice(0,28)+'…'+r.url.slice(-22):r.url;
+    return`<tr class="resource-row"><td class="py-2 px-2"><span class="badge ${typeColor}">${r.type}</span>${r.subtype?`<br><span class="text-xs text-gray-600 mt-0.5 inline-block">${r.subtype}</span>`:''}</td><td class="py-2 px-2 text-xs text-gray-400 max-w-[150px] truncate" title="${escHtml(r.text||r.alt||r.title||r.type)}">${escHtml(truncate(r.text||r.alt||r.title||r.type,30))}</td><td class="py-2 px-2 text-center">${preview}</td><td class="py-2 px-2 max-w-[220px]"><span class="text-xs text-gray-500 font-mono cursor-pointer hover:text-red-400 transition-colors" title="${escHtml(r.url)}" onclick="openPreview('${escHtml(r.url)}','${r.type==='image'?'image':r.type==='media'||r.type==='embed'?r.type:'link'}','${escHtml(truncate(r.text||r.alt||r.url,40))}')">${escHtml(urlDisp)}</span></td><td class="py-2 px-2 text-center"><button onclick="copyText('${escHtml(r.url)}')" class="badge badge-gray cursor-pointer text-xs hover:border-gray-500"><i class="fas fa-copy"></i></button></td>`;
   }).join('');
 }
 
@@ -623,12 +670,15 @@ function renderAll(data,url){
   $('ov-size').innerHTML=kvRow('Original',formatBytes(data.size?.original))+kvRow('Processed',formatBytes(data.size?.processed))+kvRow('Saved',data.size?.compression,'#4ade80');
   $('ov-timing').innerHTML=kvRow('Response',`${data.responseTime}ms`,'#facc15')+kvRow('Timestamp',new Date(data.timestamp).toLocaleTimeString())+kvRow('Request ID',data.requestId?.slice(0,8),'#c084fc');
 
-  // Visual
+  // Visual — use our own extracted data
+  const vd=data.visualData||{};
   const vis=[];
-  if(data.microlink?.screenshot)vis.push(`<div class="card-sm"><div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider">Screenshot</div><img src="${escHtml(data.microlink.screenshot)}" class="w-full rounded border border-gray-800 max-h-48 object-cover" loading=lazy></div>`);
-  if(data.microlink?.logo)vis.push(`<div class="card-sm"><div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider">Logo</div><img src="${escHtml(data.microlink.logo)}" class="max-h-16 object-contain" loading=lazy></div>`);
-  if(data.microlink?.palette?.length)vis.push(`<div class="card-sm"><div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider">Color Palette</div><div class="grid grid-cols-5 gap-2">${data.microlink.palette.map(c=>`<div class="aspect-square rounded border border-gray-700 cursor-pointer" style="background:${c}" title="${c}" onclick="copyText('${c}')"></div>`).join('')}</div></div>`);
-  if(data.metadata?.ogImage)vis.push(`<div class="card-sm"><div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider">OG Image</div><img src="${escHtml(data.metadata.ogImage)}" class="w-full rounded border border-gray-800 max-h-40 object-cover" loading=lazy></div>`);
+  if(vd.screenshot)vis.push(`<div class="card-sm cursor-pointer" onclick="openPreview('${escHtml(vd.screenshot)}','image','Screenshot')"><div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider flex items-center justify-between">Screenshot <span class="badge badge-gray">click to expand</span></div><img src="${escHtml(vd.screenshot)}" class="w-full rounded border border-gray-800 max-h-48 object-cover hover:opacity-90 transition-opacity" loading=lazy onerror="this.parentElement.style.display='none'"></div>`);
+  if(vd.ogImage)vis.push(`<div class="card-sm cursor-pointer" onclick="openPreview('${escHtml(vd.ogImage)}','image','OG Image')"><div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider flex items-center justify-between">OG Image <span class="badge badge-gray">click to expand</span></div><img src="${escHtml(vd.ogImage)}" class="w-full rounded border border-gray-800 max-h-40 object-cover hover:opacity-90 transition-opacity" loading=lazy onerror="this.parentElement.style.display='none'"></div>`);
+  if(vd.logo)vis.push(`<div class="card-sm cursor-pointer" onclick="openPreview('${escHtml(vd.logo)}','image','Site Logo')"><div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider flex items-center justify-between">Logo <span class="badge badge-gray">click</span></div><img src="${escHtml(vd.logo)}" class="max-h-16 object-contain hover:opacity-90 transition-opacity" loading=lazy onerror="this.parentElement.style.display='none'"></div>`);
+  if(vd.favicon)vis.push(`<div class="card-sm"><div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider">Favicon</div><div class="flex items-center gap-3"><img src="${escHtml(vd.favicon)}" class="w-8 h-8 object-contain" loading=lazy onerror="this.style.display='none'"><span class="text-xs text-gray-500 font-mono break-all">${escHtml(truncate(vd.favicon,50))}</span></div></div>`);
+  if(vd.palette?.length)vis.push(`<div class="card-sm"><div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider">Extracted Colors</div><div class="flex flex-wrap gap-2">${vd.palette.map(c=>`<div class="flex flex-col items-center gap-1"><div class="w-8 h-8 rounded border border-gray-700 cursor-pointer hover:scale-110 transition-transform" style="background:${c}" title="${c}" onclick="copyText('${c}')"></div><span class="text-xs text-gray-600 font-mono">${c}</span></div>`).join('')}</div></div>`);
+  if(vd.publisher||vd.author)vis.push(`<div class="card-sm"><div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider">Attribution</div>${vd.publisher?`<div class="text-xs mb-1"><span class="text-gray-500">Publisher: </span><span class="text-gray-200">${escHtml(vd.publisher)}</span></div>`:''} ${vd.author?`<div class="text-xs mb-1"><span class="text-gray-500">Author: </span><span class="text-gray-200">${escHtml(vd.author)}</span></div>`:''} ${vd.date?`<div class="text-xs"><span class="text-gray-500">Date: </span><span class="text-gray-200">${escHtml(vd.date)}</span></div>`:''}</div>`);
   $('visual-content').innerHTML=vis.join('')||'<div class="col-span-full text-center text-gray-600 py-8 font-mono text-xs">No visual data available</div>';
 
   // Metadata
@@ -641,11 +691,12 @@ function renderAll(data,url){
   // Media
   const {media=[],iframes=[]}=data.analysis||{};
   const videos=media.filter(m=>m.type==='video');const audios=media.filter(m=>m.type==='audio');
-  $('media-videos').innerHTML=videos.length?videos.map(v=>`<div class="media-card cursor-pointer" onclick="openMediaOverlay('${escHtml(v.url)}','video','${escHtml(truncate(v.url,40))}')"><div class="bg-black aspect-video flex items-center justify-center relative">${v.poster?`<img src="${escHtml(v.poster)}" class="w-full h-full object-cover absolute inset-0">`:'<i class="fas fa-film text-gray-600 text-2xl"></i>'}<div class="absolute inset-0 flex items-center justify-center"><div class="w-10 h-10 bg-red-700/80 rounded-full flex items-center justify-center"><i class="fas fa-play text-white text-sm ml-0.5"></i></div></div></div><div class="p-2"><div class="text-xs text-gray-400 truncate font-mono">${escHtml(truncate(v.url,50))}</div></div></div>`).join(''):'<div class="text-gray-600 text-xs col-span-full">No video files detected</div>';
-  $('media-audios').innerHTML=audios.length?audios.map(a=>`<div class="media-card cursor-pointer p-3" onclick="openMediaOverlay('${escHtml(a.url)}','audio','${escHtml(truncate(a.url,40))}')"><div class="flex items-center gap-3"><div class="w-10 h-10 bg-purple-900/40 rounded-full flex items-center justify-center flex-shrink-0"><i class="fas fa-music text-purple-400"></i></div><div class="text-xs text-gray-400 truncate font-mono">${escHtml(truncate(a.url,45))}</div></div></div>`).join(''):'<div class="text-gray-600 text-xs col-span-full">No audio files detected</div>';
+  $('media-videos').innerHTML=videos.length?videos.map(v=>{const disp=v.url.length>55?v.url.slice(0,28)+'…'+v.url.slice(-22):v.url;return`<div class="media-card cursor-pointer" onclick="openPreview('${escHtml(v.url)}','video','${escHtml(truncate(v.url,40))}')"><div class="bg-black aspect-video flex items-center justify-center relative overflow-hidden">${v.poster?`<img src="${escHtml(v.poster)}" class="w-full h-full object-cover absolute inset-0" loading=lazy>`:''}<div class="absolute inset-0 flex items-center justify-center bg-black/40 hover:bg-black/20 transition-colors"><div class="w-12 h-12 bg-red-700/90 rounded-full flex items-center justify-center shadow-lg"><i class="fas fa-play text-white text-sm ml-0.5"></i></div></div></div><div class="p-2"><div class="text-xs text-gray-400 font-mono truncate" title="${escHtml(v.url)}">${escHtml(disp)}</div>${v.width&&v.height?`<div class="text-xs text-gray-700 mt-0.5">${v.width}×${v.height}</div>`:''}</div></div>`}).join(''):'<div class="text-gray-600 text-xs col-span-full font-mono py-4">No video files detected</div>';
+  $('media-audios').innerHTML=audios.length?audios.map(a=>{const disp=a.url.length>55?a.url.slice(0,28)+'…'+a.url.slice(-22):a.url;return`<div class="media-card cursor-pointer p-3 hover:border-purple-700 transition-colors" onclick="openPreview('${escHtml(a.url)}','audio','${escHtml(truncate(a.url,40))}')"><div class="flex items-center gap-3"><div class="w-10 h-10 bg-purple-900/40 rounded-full flex items-center justify-center flex-shrink-0 hover:bg-purple-900/70 transition-colors"><i class="fas fa-music text-purple-400"></i></div><div class="min-w-0"><div class="text-xs text-gray-400 font-mono truncate" title="${escHtml(a.url)}">${escHtml(disp)}</div>${a.mimeType?`<div class="text-xs text-gray-700 mt-0.5">${escHtml(a.mimeType)}</div>`:''}</div></div></div>`}).join(''):'<div class="text-gray-600 text-xs col-span-full font-mono py-4">No audio files detected</div>';
   $('media-iframes').innerHTML=iframes.length?iframes.map(f=>{
     const tag=f.isYoutube?'<span class="badge badge-red ml-1">YouTube</span>':f.isVimeo?'<span class="badge badge-blue ml-1">Vimeo</span>':f.isMap?'<span class="badge badge-green ml-1">Map</span>':f.isSocial?'<span class="badge badge-purple ml-1">Social</span>':'';
-    return`<div class="media-card cursor-pointer p-3" onclick="openMediaOverlay('${escHtml(f.url)}','iframe','${escHtml(truncate(f.title||f.url,40))}')"><div class="flex items-center gap-3"><div class="w-10 h-10 bg-blue-900/40 rounded-full flex items-center justify-center flex-shrink-0"><i class="fas fa-window-restore text-blue-400"></i></div><div><div class="text-xs text-gray-300 font-mono">${tag}</div><div class="text-xs text-gray-500 truncate font-mono mt-0.5">${escHtml(truncate(f.url,50))}</div>${f.width&&f.height?`<div class="text-xs text-gray-700">${f.width}×${f.height}</div>`:''}</div></div></div>`;
+    const disp=f.url.length>55?f.url.slice(0,28)+'…'+f.url.slice(-22):f.url;
+    return`<div class="media-card cursor-pointer p-3" onclick="openPreview('${escHtml(f.url)}','embed','${escHtml(truncate(f.title||f.url,40))}')"><div class="flex items-center gap-3"><div class="w-10 h-10 bg-blue-900/40 rounded-full flex items-center justify-center flex-shrink-0"><i class="fas fa-window-restore text-blue-400"></i></div><div class="min-w-0"><div class="text-xs text-gray-300 font-mono flex items-center gap-1 flex-wrap">${tag}</div><div class="text-xs text-gray-500 font-mono mt-0.5 truncate" title="${escHtml(f.url)}">${escHtml(disp)}</div>${f.width&&f.height?`<div class="text-xs text-gray-700">${f.width}×${f.height}</div>`:''}</div></div></div>`;
   }).join(''):'<div class="text-gray-600 text-xs col-span-full">No iframes detected</div>';
 
   // SEO
@@ -699,6 +750,26 @@ function renderAll(data,url){
   $('ads-count').textContent=ads.removed?.length||0;$('trackers-count').textContent=ads.trackers?.length||0;$('cleaned-total').textContent=ads.totalCleaned||0;
   $('ads-list').innerHTML=(ads.removed||[]).length?(ads.removed||[]).map(a=>`<div class="card-sm"><div class="badge badge-red mb-1">${escHtml(a.type)}</div><div class="text-xs text-gray-500 font-mono break-all">${escHtml(truncate(a.selector||a.url||a.snippet||'',80))}</div></div>`).join(''):'<div class="text-gray-600 text-xs font-mono">No ads detected/removed</div>';
   $('trackers-list').innerHTML=(ads.trackers||[]).length?(ads.trackers||[]).map(t=>`<div class="card-sm"><div class="badge badge-yellow mb-1">tracker</div><div class="text-xs text-gray-500 font-mono break-all">${escHtml(truncate(t.url||'',80))}</div></div>`).join(''):'<div class="text-gray-600 text-xs font-mono">No trackers detected</div>';
+
+  // Bot / WAF
+  const bp=data.botProtection||{signals:[],bypassScore:'Unknown'};
+  const bypassColors={'Easy':'#4ade80','Moderate':'#facc15','Hard':'#f97316','Very Hard':'#ef4444'};
+  const bypassIcons={'Easy':'🟢','Moderate':'🟡','Hard':'🟠','Very Hard':'🔴'};
+  $('bot-icon').textContent=bypassIcons[bp.bypassScore]||'⚪';
+  $('bot-bypass').textContent=bp.bypassScore||'Unknown';
+  $('bot-bypass').style.color=bypassColors[bp.bypassScore]||'#9ca3af';
+  $('bot-badges').innerHTML=[bp.hasWAF&&'<span class="badge badge-red">WAF</span>',bp.hasCaptcha&&'<span class="badge badge-yellow">CAPTCHA</span>',bp.hasCDN&&'<span class="badge badge-blue">CDN</span>'].filter(Boolean).join('')||'<span class="badge badge-gray">No protection detected</span>';
+  const sevMap={high:'seo-error',medium:'seo-warn',low:'seo-warn',info:'seo-pass'};
+  const sevIcon={high:'fas fa-times-circle text-red-500',medium:'fas fa-exclamation-circle text-yellow-500',low:'fas fa-info-circle text-blue-400',info:'fas fa-check-circle text-green-500'};
+  $('bot-signals').innerHTML=(bp.signals||[]).length?(bp.signals||[]).map(s=>`<div class="seo-item ${sevMap[s.severity]||'seo-pass'}"><i class="${sevIcon[s.severity]||sevIcon.info} flex-shrink-0 mt-0.5"></i><div><div class="flex items-center gap-2"><i class="${s.icon||'fas fa-shield'} text-xs text-gray-500"></i><span class="text-xs font-bold text-white">${escHtml(s.name)}</span><span class="badge badge-gray">${escHtml(s.category)}</span></div><div class="text-xs text-gray-400 mt-0.5">${escHtml(s.detail||'')}</div></div></div>`).join(''):'<div class="text-gray-600 text-xs font-mono py-4">No bot protection signals detected — site may be freely crawlable</div>';
+  const rh=data.responseHeaders||{};$('bot-headers').innerHTML=Object.entries(rh).map(([k,v])=>`<div class="card-sm"><div class="text-xs text-gray-600 font-mono mb-0.5 uppercase tracking-wider">${escHtml(k)}</div><div class="text-xs text-gray-300 break-all font-mono">${escHtml(truncate(String(v),80))}</div></div>`).join('')||'<div class="text-gray-600 text-xs">No headers</div>';
+
+  // AI Detection
+  const ai=data.aiContent||{signals:[],likelihoodScore:0,likelyAI:false};
+  scoreRing('ai-ring',ai.likelihoodScore,ai.likelihoodScore>=60?'#c084fc':ai.likelihoodScore>=30?'#facc15':'#4ade80');
+  $('ai-verdict').textContent=ai.likelyAI?'Likely AI-Generated':'Likely Human-Written';
+  $('ai-verdict').style.color=ai.likelyAI?'#c084fc':'#4ade80';
+  $('ai-signals').innerHTML=(ai.signals||[]).length?(ai.signals||[]).map(s=>`<div class="seo-item seo-warn"><i class="fas fa-brain text-purple-500 flex-shrink-0 mt-0.5"></i><div><span class="badge badge-purple mb-1">${escHtml(s.type)}</span><div class="text-xs text-gray-300">${escHtml(s.msg)}</div></div></div>`).join(''):'<div class="text-gray-600 text-xs font-mono py-4">No AI content signals detected</div>';
 
   // Source
   $('code-content').textContent=data.contents||'';
