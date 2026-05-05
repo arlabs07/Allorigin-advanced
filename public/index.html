@@ -1,788 +1,470 @@
-<!doctype html><html lang=en><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>ProxyForge v4.1 - Advanced Web Extractor</title><script src=https://cdn.tailwindcss.com></script><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js></script><style>:root{--red:#dc2626;--red-dark:#991b1b;--red-bright:#ef4444;--bg:#030712;--bg2:#0a0a0f;--bg3:#111827;--border:#1f2937;--text:#e5e7eb;--muted:#6b7280}*{box-sizing:border-box}::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:#0a0a0f}::-webkit-scrollbar-thumb{background:#dc2626;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#ef4444}body{background:radial-gradient(ellipse 120% 80% at 50% -10%,#1a0000 0%,#030712 60%);min-height:100vh;font-family:'Courier New',monospace;color:var(--text)}
-.nav-scroll{display:flex;overflow-x:auto;gap:.25rem;padding-bottom:.25rem;scrollbar-width:thin;scrollbar-color:#dc2626 #0a0a0f}.nav-tab{flex-shrink:0;padding:.4rem .9rem;border-radius:.4rem;font-size:.72rem;font-weight:600;letter-spacing:.04em;border:1px solid transparent;cursor:pointer;transition:all .2s;background:transparent;color:#6b7280;text-transform:uppercase;white-space:nowrap}.nav-tab:hover{color:#e5e7eb;border-color:#374151;background:#111827}.nav-tab.active{color:#ef4444;border-color:#dc2626;background:rgba(220,38,38,.12)}
-.page-content{display:none}.page-content.active{display:block}
-.card{background:rgba(10,10,15,.8);border:1px solid #1f2937;border-radius:.6rem;padding:1.25rem;backdrop-filter:blur(8px)}.card-sm{background:rgba(10,10,15,.6);border:1px solid #1f2937;border-radius:.5rem;padding:.85rem}
-.badge{display:inline-flex;align-items:center;gap:.3rem;padding:.2rem .6rem;border-radius:.3rem;font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
-.badge-red{background:rgba(220,38,38,.15);color:#ef4444;border:1px solid rgba(220,38,38,.3)}.badge-green{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.2)}.badge-yellow{background:rgba(234,179,8,.1);color:#facc15;border:1px solid rgba(234,179,8,.2)}.badge-blue{background:rgba(59,130,246,.1);color:#60a5fa;border:1px solid rgba(59,130,246,.2)}.badge-purple{background:rgba(168,85,247,.1);color:#c084fc;border:1px solid rgba(168,85,247,.2)}.badge-gray{background:rgba(107,114,128,.1);color:#9ca3af;border:1px solid rgba(107,114,128,.2)}
-.score-ring{width:80px;height:80px;position:relative;flex-shrink:0}.score-ring svg{transform:rotate(-90deg)}.score-ring .score-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;font-family:'Courier New',monospace}
-.resource-row{border-bottom:1px solid #111827;transition:background .15s}.resource-row:hover{background:rgba(220,38,38,.04)}
-.copy-flash{animation:flash .3s ease}.@keyframes flash{0%{background:rgba(220,38,38,.3)}100%{background:transparent}}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:100;display:flex;flex-direction:column;backdrop-filter:blur(6px)}.overlay-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid #1f2937;background:#030712}.overlay-body{flex:1;overflow-y:auto;padding:1.5rem}
-.media-card{background:#0a0a0f;border:1px solid #1f2937;border-radius:.5rem;overflow:hidden;transition:border-color .2s}.media-card:hover{border-color:#dc2626}
-.md-doc h1{font-size:1.6rem;font-weight:800;color:#ef4444;margin:1.5rem 0 .75rem;padding-bottom:.5rem;border-bottom:2px solid #1f2937}.md-doc h2{font-size:1.2rem;font-weight:700;color:#f87171;margin:1.25rem 0 .5rem}.md-doc h3{font-size:1rem;font-weight:700;color:#fca5a5;margin:1rem 0 .4rem}.md-doc p{color:#9ca3af;line-height:1.7;margin:.5rem 0}.md-doc code{background:#111827;color:#f87171;padding:.1rem .4rem;border-radius:.25rem;font-size:.8rem;font-family:'Courier New',monospace}.md-doc pre{background:#111827;border:1px solid #1f2937;border-radius:.5rem;padding:1rem;margin:.75rem 0;overflow-x:auto}.md-doc pre code{background:transparent;color:#e5e7eb;padding:0}.md-doc ul,md-doc ol{color:#9ca3af;padding-left:1.5rem;margin:.5rem 0}.md-doc ul li,.md-doc ol li{margin:.25rem 0;line-height:1.6}.md-doc table{width:100%;border-collapse:collapse;margin:.75rem 0}.md-doc th{background:#111827;color:#ef4444;text-align:left;padding:.5rem .75rem;font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;border:1px solid #1f2937}.md-doc td{padding:.5rem .75rem;border:1px solid #1f2937;color:#9ca3af;font-size:.8rem}.md-doc tr:nth-child(even){background:rgba(17,24,39,.4)}.md-doc strong{color:#e5e7eb}.md-doc a{color:#ef4444;text-decoration:underline}.md-doc blockquote{border-left:3px solid #dc2626;padding:.5rem 1rem;margin:.75rem 0;background:rgba(220,38,38,.06);color:#9ca3af;border-radius:0 .3rem .3rem 0}
-.pulse-dot{width:8px;height:8px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite}.@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
-.progress-bar{height:6px;background:#1f2937;border-radius:3px;overflow:hidden}.progress-fill{height:100%;border-radius:3px;transition:width .8s ease}
-.tech-chip{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .7rem;border-radius:.4rem;font-size:.7rem;font-weight:600;background:#0a0a0f;border:1px solid #1f2937;color:#e5e7eb;margin:.2rem}
-.seo-item{display:flex;align-items:flex-start;gap:.6rem;padding:.5rem;border-radius:.35rem;margin:.25rem 0;font-size:.78rem}.seo-pass{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.12)}.seo-warn{background:rgba(234,179,8,.06);border:1px solid rgba(234,179,8,.12)}.seo-error{background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.18)}
-input[type=url]{font-family:'Courier New',monospace}
-.shine{position:relative;overflow:hidden}.shine::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(220,38,38,.06),transparent);animation:shine 3s infinite}.@keyframes shine{0%{left:-100%}100%{left:200%}}
-.doc-btn{position:fixed;bottom:1.5rem;right:1.5rem;z-index:50;background:#dc2626;color:#fff;border:none;border-radius:50%;width:52px;height:52px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;box-shadow:0 4px 20px rgba(220,38,38,.4);transition:all .2s}.doc-btn:hover{background:#991b1b;transform:scale(1.08);box-shadow:0 6px 28px rgba(220,38,38,.5)}
-</style></head>
+<!doctype html><html lang=en><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>ProxyForge v4.2 - Advanced Web Extractor</title><script src=https://cdn.tailwindcss.com></script><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js></script><style>:root{--r:#dc2626;--rd:#991b1b;--rb:#ef4444;--bg:#030712;--b2:#0a0a0f;--b3:#111827;--br:#1f2937;--tx:#e5e7eb;--mu:#6b7280}*{box-sizing:border-box}::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:#0a0a0f}::-webkit-scrollbar-thumb{background:#dc2626;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#ef4444}body{background:radial-gradient(ellipse 120% 80% at 50% -10%,#1a0000 0%,#030712 60%);min-height:100vh;font-family:'Courier New',monospace;color:var(--tx)}.ns{display:flex;overflow-x:auto;gap:.25rem;padding-bottom:.25rem;scrollbar-width:thin;scrollbar-color:#dc2626 #0a0a0f}.nt{flex-shrink:0;padding:.4rem .9rem;border-radius:.4rem;font-size:.72rem;font-weight:600;letter-spacing:.04em;border:1px solid transparent;cursor:pointer;transition:all .2s;background:transparent;color:#6b7280;text-transform:uppercase;white-space:nowrap}.nt:hover{color:#e5e7eb;border-color:#374151;background:#111827}.nt.ac{color:#ef4444;border-color:#dc2626;background:rgba(220,38,38,.12)}.pc{display:none}.pc.ac{display:block}.cd{background:rgba(10,10,15,.8);border:1px solid #1f2937;border-radius:.6rem;padding:1.25rem;backdrop-filter:blur(8px)}.cs{background:rgba(10,10,15,.6);border:1px solid #1f2937;border-radius:.5rem;padding:.85rem}.bg{display:inline-flex;align-items:center;gap:.3rem;padding:.2rem .6rem;border-radius:.3rem;font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}.br2{background:rgba(220,38,38,.15);color:#ef4444;border:1px solid rgba(220,38,38,.3)}.bg2{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.2)}.by{background:rgba(234,179,8,.1);color:#facc15;border:1px solid rgba(234,179,8,.2)}.bb{background:rgba(59,130,246,.1);color:#60a5fa;border:1px solid rgba(59,130,246,.2)}.bp{background:rgba(168,85,247,.1);color:#c084fc;border:1px solid rgba(168,85,247,.2)}.bgr{background:rgba(107,114,128,.1);color:#9ca3af;border:1px solid rgba(107,114,128,.2)}.sr{width:80px;height:80px;position:relative;flex-shrink:0}.sr svg{transform:rotate(-90deg)}.sr .st{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;font-family:'Courier New',monospace}.rr{border-bottom:1px solid #111827;transition:background .15s}.rr:hover{background:rgba(220,38,38,.04)}.ov{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:100;display:flex;flex-direction:column;backdrop-filter:blur(6px)}.oh{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid #1f2937;background:#030712}.ob{flex:1;overflow-y:auto;padding:1.5rem}.mc{background:#0a0a0f;border:1px solid #1f2937;border-radius:.5rem;overflow:hidden;transition:border-color .2s}.mc:hover{border-color:#dc2626}.md h1{font-size:1.6rem;font-weight:800;color:#ef4444;margin:1.5rem 0 .75rem;padding-bottom:.5rem;border-bottom:2px solid #1f2937}.md h2{font-size:1.2rem;font-weight:700;color:#f87171;margin:1.25rem 0 .5rem}.md h3{font-size:1rem;font-weight:700;color:#fca5a5;margin:1rem 0 .4rem}.md p{color:#9ca3af;line-height:1.7;margin:.5rem 0}.md code{background:#111827;color:#f87171;padding:.1rem .4rem;border-radius:.25rem;font-size:.8rem}.md pre{background:#111827;border:1px solid #1f2937;border-radius:.5rem;padding:1rem;margin:.75rem 0;overflow-x:auto}.md pre code{background:transparent;color:#e5e7eb;padding:0}.md table{width:100%;border-collapse:collapse;margin:.75rem 0}.md th{background:#111827;color:#ef4444;text-align:left;padding:.5rem .75rem;font-size:.75rem;text-transform:uppercase;border:1px solid #1f2937}.md td{padding:.5rem .75rem;border:1px solid #1f2937;color:#9ca3af;font-size:.8rem}.md tr:nth-child(even){background:rgba(17,24,39,.4)}.md strong{color:#e5e7eb}.md a{color:#ef4444;text-decoration:underline}.md blockquote{border-left:3px solid #dc2626;padding:.5rem 1rem;margin:.75rem 0;background:rgba(220,38,38,.06);color:#9ca3af;border-radius:0 .3rem .3rem 0}.pd{width:8px;height:8px;border-radius:50%;background:#4ade80;animation:pu 2s infinite}@keyframes pu{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}.pb{height:6px;background:#1f2937;border-radius:3px;overflow:hidden}.pf{height:100%;border-radius:3px;transition:width .8s ease}.tc{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .7rem;border-radius:.4rem;font-size:.7rem;font-weight:600;background:#0a0a0f;border:1px solid #1f2937;color:#e5e7eb;margin:.2rem}.si{display:flex;align-items:flex-start;gap:.6rem;padding:.5rem;border-radius:.35rem;margin:.25rem 0;font-size:.78rem}.sp{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.12)}.sw{background:rgba(234,179,8,.06);border:1px solid rgba(234,179,8,.12)}.se{background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.18)}.sh{position:relative;overflow:hidden}.sh::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(220,38,38,.06),transparent);animation:sh 3s infinite}@keyframes sh{0%{left:-100%}100%{left:200%}}.db{position:fixed;bottom:1.5rem;right:1.5rem;z-index:50;background:#dc2626;color:#fff;border:none;border-radius:50%;width:52px;height:52px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;box-shadow:0 4px 20px rgba(220,38,38,.4);transition:all .2s}.db:hover{background:#991b1b;transform:scale(1.08)}.ck{display:flex;align-items:center;gap:.75rem;padding:.75rem;background:rgba(10,10,15,.7);border:1px solid #1f2937;border-radius:.5rem;cursor:pointer;transition:all .2s;user-select:none}.ck:hover{border-color:#374151;background:rgba(17,24,39,.8)}.ck input[type=checkbox]{width:16px;height:16px;accent-color:#dc2626;cursor:pointer;flex-shrink:0}.ck.en{border-color:rgba(220,38,38,.4);background:rgba(220,38,38,.06)}.ck .cl{font-size:.78rem;color:#e5e7eb;font-weight:600}.ck .cd2{font-size:.67rem;color:#6b7280;margin-top:.15rem}.og-log{background:#0a0a0f;border:1px solid #1f2937;border-radius:.4rem;padding:.5rem .75rem;font-size:.7rem;font-family:'Courier New',monospace}.og-ok{color:#4ade80}.og-in{color:#60a5fa}.og-rm{color:#f97316}.og-bl{color:#facc15}</style></head>
 <body>
 <div class="max-w-7xl mx-auto p-3 md:p-5">
 <header class="text-center mb-6 pt-4">
 <div class="inline-flex items-center gap-3 mb-2">
-<div class="w-8 h-8 bg-red-700 rounded-lg flex items-center justify-center shine"><i class="fas fa-bolt text-white text-sm"></i></div>
-<h1 class="text-2xl md:text-3xl font-black text-white tracking-tight">PROXY<span class="text-red-500">FORGE</span> <span class="text-xs text-gray-500 font-mono ml-1">v4.1</span></h1>
+<div class="w-8 h-8 bg-red-700 rounded-lg flex items-center justify-center sh"><i class="fas fa-bolt text-white text-sm"></i></div>
+<h1 class="text-2xl md:text-3xl font-black text-white tracking-tight">PROXY<span class="text-red-500">FORGE</span> <span class="text-xs text-gray-500 font-mono ml-1">v4.2</span></h1>
 </div>
-<p class="text-gray-500 text-xs font-mono tracking-widest uppercase">Advanced Web Extraction · Analysis · Intelligence</p>
+<p class="text-gray-500 text-xs font-mono tracking-widest uppercase">Advanced Web Extraction · Analysis · Intelligence · Optimization</p>
 </header>
 
-<form id=proxy-form class="mb-4 max-w-3xl mx-auto">
+<form id=pf class="mb-4 max-w-3xl mx-auto">
 <div class="flex items-center bg-black/60 border border-gray-800 rounded-lg overflow-hidden shadow-2xl focus-within:border-red-700 transition-colors">
 <span class="pl-3 text-red-600 text-sm"><i class="fas fa-globe"></i></span>
-<input type=url id=url-input placeholder="https://example.com" required class="flex-1 bg-transparent p-3 text-white focus:outline-none text-sm placeholder-gray-600">
-<button type=submit id=fetch-btn class="bg-red-700 hover:bg-red-800 text-white px-5 py-3 transition-colors focus:outline-none text-sm font-bold uppercase tracking-wider flex items-center gap-2">
-<span>Analyze</span><i id=spinner class="fas fa-spinner fa-spin hidden text-xs"></i>
+<input type=url id=ui placeholder="https://example.com" required class="flex-1 bg-transparent p-3 text-white focus:outline-none text-sm placeholder-gray-600" style="font-family:'Courier New',monospace">
+<button type=submit id=fb class="bg-red-700 hover:bg-red-800 text-white px-5 py-3 transition-colors focus:outline-none text-sm font-bold uppercase tracking-wider flex items-center gap-2">
+<span>Analyze</span><i id=sp class="fas fa-spinner fa-spin hidden text-xs"></i>
 </button>
 </div>
 </form>
 
-<div id=msg class="text-center text-gray-600 mb-4 text-sm font-mono" role=status aria-live=polite>
-<span class="pulse-dot inline-block mr-2 align-middle"></span>Enter a URL to begin extraction
+<div id=mg class="text-center text-gray-600 mb-4 text-sm font-mono" role=status aria-live=polite>
+<span class="pd inline-block mr-2 align-middle"></span>Enter a URL to begin extraction
 </div>
 
-<div id=page-nav class="hidden mb-4">
-<div class="card p-2">
-<div class="nav-scroll">
-<button class="nav-tab active" data-page=overview><i class="fas fa-chart-line mr-1"></i>Overview</button>
-<button class="nav-tab" data-page=visual><i class="fas fa-camera mr-1"></i>Visual</button>
-<button class="nav-tab" data-page=metadata><i class="fas fa-tags mr-1"></i>Metadata</button>
-<button class="nav-tab" data-page=resources><i class="fas fa-list mr-1"></i>Resources</button>
-<button class="nav-tab" data-page=media><i class="fas fa-play-circle mr-1"></i>Media</button>
-<button class="nav-tab" data-page=seo><i class="fas fa-search mr-1"></i>SEO</button>
-<button class="nav-tab" data-page=security><i class="fas fa-shield-alt mr-1"></i>Security</button>
-<button class="nav-tab" data-page=accessibility><i class="fas fa-universal-access mr-1"></i>A11y</button>
-<button class="nav-tab" data-page=tech><i class="fas fa-microchip mr-1"></i>Technologies</button>
-<button class="nav-tab" data-page=social><i class="fas fa-share-alt mr-1"></i>Social</button>
-<button class="nav-tab" data-page=structure><i class="fas fa-sitemap mr-1"></i>Structure</button>
-<button class="nav-tab" data-page=performance><i class="fas fa-tachometer-alt mr-1"></i>Performance</button>
-<button class="nav-tab" data-page=cleaned><i class="fas fa-broom mr-1"></i>Cleaned</button>
-<button class="nav-tab" data-page=bot><i class="fas fa-robot mr-1"></i>Bot/WAF</button>
-<button class="nav-tab" data-page=ai><i class="fas fa-brain mr-1"></i>AI Detect</button>
-<button class="nav-tab" data-page=source><i class="fas fa-code mr-1"></i>Source</button>
-<button class="nav-tab" data-page=preview><i class="fas fa-desktop mr-1"></i>Preview</button>
+<div id=pn class="hidden mb-4">
+<div class="cd p-2">
+<div class="ns">
+<button class="nt ac" data-p=overview><i class="fas fa-chart-line mr-1"></i>Overview</button>
+<button class="nt" data-p=visual><i class="fas fa-camera mr-1"></i>Visual</button>
+<button class="nt" data-p=metadata><i class="fas fa-tags mr-1"></i>Metadata</button>
+<button class="nt" data-p=resources><i class="fas fa-list mr-1"></i>Resources</button>
+<button class="nt" data-p=media><i class="fas fa-play-circle mr-1"></i>Media</button>
+<button class="nt" data-p=seo><i class="fas fa-search mr-1"></i>SEO</button>
+<button class="nt" data-p=security><i class="fas fa-shield-alt mr-1"></i>Security</button>
+<button class="nt" data-p=accessibility><i class="fas fa-universal-access mr-1"></i>A11y</button>
+<button class="nt" data-p=tech><i class="fas fa-microchip mr-1"></i>Tech</button>
+<button class="nt" data-p=social><i class="fas fa-share-alt mr-1"></i>Social</button>
+<button class="nt" data-p=structure><i class="fas fa-sitemap mr-1"></i>Structure</button>
+<button class="nt" data-p=performance><i class="fas fa-tachometer-alt mr-1"></i>Perf</button>
+<button class="nt" data-p=cleaned><i class="fas fa-broom mr-1"></i>Cleaned</button>
+<button class="nt" data-p=bot><i class="fas fa-robot mr-1"></i>Bot/WAF</button>
+<button class="nt" data-p=ai><i class="fas fa-brain mr-1"></i>AI</button>
+<button class="nt" data-p=optimise><i class="fas fa-magic mr-1"></i><span class="text-red-400">Optimise</span></button>
+<button class="nt" data-p=source><i class="fas fa-code mr-1"></i>Source</button>
+<button class="nt" data-p=preview><i class="fas fa-desktop mr-1"></i>Preview</button>
 </div>
 </div>
 </div>
 
-<div id=results class="hidden space-y-4">
+<div id=rs class="hidden space-y-4">
 
-<!-- OVERVIEW -->
-<div id=overview-page class="page-content active">
-<div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4" id=stat-cards></div>
+<div id=overview-page class="pc ac">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4" id=sc2></div>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-<div class="card"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-heartbeat text-green-500"></i>Response</h3><div id=ov-status class="space-y-2 text-sm"></div></div>
-<div class="card"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-weight text-purple-500"></i>Payload</h3><div id=ov-size class="space-y-2 text-sm"></div></div>
-<div class="card"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-clock text-yellow-500"></i>Timing</h3><div id=ov-timing class="space-y-2 text-sm"></div></div>
+<div class="cd"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-heartbeat text-green-500"></i>Response</h3><div id=os class="space-y-2 text-sm"></div></div>
+<div class="cd"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-weight text-purple-500"></i>Payload</h3><div id=oz class="space-y-2 text-sm"></div></div>
+<div class="cd"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-clock text-yellow-500"></i>Timing</h3><div id=ot class="space-y-2 text-sm"></div></div>
 </div>
 </div>
 
-<!-- VISUAL -->
-<div id=visual-page class="page-content">
-<div class="card"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fas fa-camera text-blue-500"></i>Visual Analysis</h3><div id=visual-content class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div></div>
+<div id=visual-page class="pc">
+<div class="cd"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fas fa-camera text-blue-500"></i>Visual Analysis</h3><div id=vc class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div></div>
 </div>
 
-<!-- METADATA -->
-<div id=metadata-page class="page-content">
-<div class="card">
-<div class="flex justify-between items-center mb-4">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2"><i class="fas fa-tags text-cyan-500"></i>Complete Metadata</h3>
-<button onclick="copyEl('metadata-grid','Metadata')" class="badge badge-gray cursor-pointer hover:border-gray-500"><i class="fas fa-copy mr-1"></i>Copy</button>
-</div>
-<div id=metadata-grid class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
-</div>
+<div id=metadata-page class="pc">
+<div class="cd"><div class="flex justify-between items-center mb-4"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2"><i class="fas fa-tags text-cyan-500"></i>Metadata</h3><button onclick="cEl('mg2','Metadata')" class="bg bgr cursor-pointer hover:border-gray-500"><i class="fas fa-copy mr-1"></i>Copy</button></div><div id=mg2 class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div></div>
 </div>
 
-<!-- RESOURCES -->
-<div id=resources-page class="page-content">
-<div class="card">
-<div class="flex flex-wrap justify-between items-center mb-4 gap-2">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2"><i class="fas fa-list text-green-500"></i>All Resources <span id=res-count class="text-gray-600">(0)</span></h3>
-<div class="flex gap-2">
-<select id=res-filter class="bg-gray-900 text-gray-300 text-xs px-2 py-1 rounded border border-gray-700 focus:outline-none focus:border-red-600">
-<option value=all>All Types</option><option value=image>Images</option><option value=link>Links</option><option value=script>Scripts</option><option value=stylesheet>Stylesheets</option><option value=media>Media</option><option value=embed>Embeds</option>
-</select>
-<input id=res-search placeholder="Search..." class="bg-gray-900 text-gray-300 text-xs px-2 py-1 rounded border border-gray-700 focus:outline-none focus:border-red-600 w-32">
-</div>
-</div>
-<div class="overflow-x-auto max-h-[450px] overflow-y-auto">
-<table class="w-full text-xs"><thead class="sticky top-0 bg-gray-950 z-10"><tr class="border-b border-gray-800"><th class="text-left py-2 px-2 text-gray-500 font-mono">Type</th><th class="text-left py-2 px-2 text-gray-500 font-mono">Desc</th><th class="text-center py-2 px-2 text-gray-500 font-mono">Preview</th><th class="text-left py-2 px-2 text-gray-500 font-mono">URL</th><th class="text-center py-2 px-2 text-gray-500 font-mono">Copy</th></tr></thead><tbody id=res-tbody></tbody></table>
-</div>
-</div>
+<div id=resources-page class="pc">
+<div class="cd"><div class="flex flex-wrap justify-between items-center mb-4 gap-2"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2"><i class="fas fa-list text-green-500"></i>Resources <span id=rc class="text-gray-600">(0)</span></h3><div class="flex gap-2"><select id=rf class="bg-gray-900 text-gray-300 text-xs px-2 py-1 rounded border border-gray-700 focus:outline-none focus:border-red-600"><option value=all>All</option><option value=image>Images</option><option value=link>Links</option><option value=script>Scripts</option><option value=stylesheet>CSS</option><option value=media>Media</option><option value=embed>Embeds</option></select><input id=rs2 placeholder="Search..." class="bg-gray-900 text-gray-300 text-xs px-2 py-1 rounded border border-gray-700 focus:outline-none focus:border-red-600 w-32"></div></div><div class="overflow-x-auto max-h-[450px] overflow-y-auto"><table class="w-full text-xs"><thead class="sticky top-0 bg-gray-950 z-10"><tr class="border-b border-gray-800"><th class="text-left py-2 px-2 text-gray-500 font-mono">Type</th><th class="text-left py-2 px-2 text-gray-500 font-mono">Desc</th><th class="text-center py-2 px-2 text-gray-500 font-mono">Preview</th><th class="text-left py-2 px-2 text-gray-500 font-mono">URL</th><th class="text-center py-2 px-2 text-gray-500 font-mono">Copy</th></tr></thead><tbody id=rb></tbody></table></div></div>
 </div>
 
-<!-- MEDIA -->
-<div id=media-page class="page-content">
-<div class="card mb-4">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fas fa-film text-red-500"></i>Video Files</h3>
-<div id=media-videos class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
-</div>
-<div class="card mb-4">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fas fa-music text-purple-500"></i>Audio Files</h3>
-<div id=media-audios class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
-</div>
-<div class="card">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fas fa-window-restore text-blue-500"></i>Embedded Frames</h3>
-<div id=media-iframes class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
-</div>
+<div id=media-page class="pc">
+<div class="cd mb-4"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fas fa-film text-red-500"></i>Video</h3><div id=mv class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div></div>
+<div class="cd mb-4"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fas fa-music text-purple-500"></i>Audio</h3><div id=ma class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div></div>
+<div class="cd"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fas fa-window-restore text-blue-500"></i>Frames</h3><div id=mi class="grid grid-cols-1 md:grid-cols-2 gap-3"></div></div>
 </div>
 
-<!-- SEO -->
-<div id=seo-page class="page-content">
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-<div class="card flex flex-col items-center text-center">
-<div class="score-ring mb-3" id=seo-ring></div>
-<div class="text-xs text-gray-400 font-mono uppercase tracking-wider">SEO Score</div>
-<div class="text-xs text-gray-600 mt-1" id=seo-counts></div>
-</div>
-<div class="card md:col-span-2">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-exclamation-triangle text-red-500"></i>Issues & Checks</h3>
-<div id=seo-checks class="space-y-1 max-h-72 overflow-y-auto"></div>
-</div>
-</div>
-<div class="card mt-4">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-info-circle text-blue-500"></i>Key SEO Fields</h3>
-<div id=seo-fields class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
-</div>
+<div id=seo-page class="pc">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4"><div class="cd flex flex-col items-center text-center"><div class="sr mb-3" id=sr2></div><div class="text-xs text-gray-400 font-mono uppercase tracking-wider">SEO Score</div><div class="text-xs text-gray-600 mt-1" id=sct></div></div><div class="cd md:col-span-2"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-exclamation-triangle text-red-500"></i>Checks</h3><div id=sch class="space-y-1 max-h-72 overflow-y-auto"></div></div></div>
+<div class="cd mt-4"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-info-circle text-blue-500"></i>SEO Fields</h3><div id=sf class="grid grid-cols-1 md:grid-cols-2 gap-3"></div></div>
 </div>
 
-<!-- SECURITY -->
-<div id=security-page class="page-content">
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-<div class="card flex flex-col items-center text-center">
-<div class="score-ring mb-3" id=sec-ring></div>
-<div class="text-xs text-gray-400 font-mono uppercase tracking-wider">Security Score</div>
-</div>
-<div class="card md:col-span-2">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-shield-alt text-red-500"></i>Security Findings</h3>
-<div id=sec-findings class="space-y-1 max-h-80 overflow-y-auto"></div>
-</div>
-</div>
+<div id=security-page class="pc">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4"><div class="cd flex flex-col items-center text-center"><div class="sr mb-3" id=secr></div><div class="text-xs text-gray-400 font-mono uppercase tracking-wider">Security Score</div></div><div class="cd md:col-span-2"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-shield-alt text-red-500"></i>Findings</h3><div id=sfi class="space-y-1 max-h-80 overflow-y-auto"></div></div></div>
 </div>
 
-<!-- ACCESSIBILITY -->
-<div id=accessibility-page class="page-content">
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-<div class="card flex flex-col items-center text-center">
-<div class="score-ring mb-3" id=a11y-ring></div>
-<div class="text-xs text-gray-400 font-mono uppercase tracking-wider">A11y Score</div>
-<div class="text-xs text-gray-600 mt-1" id=a11y-counts></div>
-</div>
-<div class="card md:col-span-2">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-universal-access text-blue-500"></i>Accessibility Checks</h3>
-<div id=a11y-checks class="space-y-1 max-h-80 overflow-y-auto"></div>
-</div>
-</div>
+<div id=accessibility-page class="pc">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4"><div class="cd flex flex-col items-center text-center"><div class="sr mb-3" id=ar2></div><div class="text-xs text-gray-400 font-mono uppercase tracking-wider">A11y Score</div><div class="text-xs text-gray-600 mt-1" id=ac2></div></div><div class="cd md:col-span-2"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-universal-access text-blue-500"></i>Checks</h3><div id=ach class="space-y-1 max-h-80 overflow-y-auto"></div></div></div>
 </div>
 
-<!-- TECHNOLOGIES -->
-<div id=tech-page class="page-content">
-<div class="card">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fas fa-microchip text-green-500"></i>Detected Technologies</h3>
-<div id=tech-grid></div>
-</div>
-</div>
+<div id=tech-page class="pc"><div class="cd"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fas fa-microchip text-green-500"></i>Technologies</h3><div id=tg></div></div></div>
 
-<!-- SOCIAL -->
-<div id=social-page class="page-content">
-<div class="card">
-<div class="flex justify-between items-center mb-4">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2"><i class="fas fa-share-alt text-pink-500"></i>Social Media</h3>
-<button onclick="copyEl('social-grid','Social')" class="badge badge-gray cursor-pointer hover:border-gray-500"><i class="fas fa-copy mr-1"></i>Copy</button>
-</div>
-<div id=social-grid class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3"></div>
-</div>
-</div>
+<div id=social-page class="pc"><div class="cd"><div class="flex justify-between items-center mb-4"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2"><i class="fas fa-share-alt text-pink-500"></i>Social</h3><button onclick="cEl('sg','Social')" class="bg bgr cursor-pointer"><i class="fas fa-copy mr-1"></i>Copy</button></div><div id=sg class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3"></div></div></div>
 
-<!-- STRUCTURE -->
-<div id=structure-page class="page-content">
+<div id=structure-page class="pc">
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-<div class="card">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-heading text-indigo-500"></i>Heading Structure</h3>
-<div id=headings-content class="space-y-2"></div>
-</div>
-<div class="card">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-link text-blue-500"></i>Link Analysis</h3>
-<div id=links-content class="space-y-2"></div>
-</div>
-<div class="card md:col-span-2">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-wpforms text-yellow-500"></i>Forms</h3>
-<div id=forms-content class="grid grid-cols-2 md:grid-cols-5 gap-2"></div>
-</div>
+<div class="cd"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-heading text-indigo-500"></i>Headings</h3><div id=hc></div></div>
+<div class="cd"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-link text-blue-500"></i>Links</h3><div id=lc></div></div>
+<div class="cd md:col-span-2"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-wpforms text-yellow-500"></i>Forms</h3><div id=fc class="grid grid-cols-2 md:grid-cols-5 gap-2"></div></div>
 </div>
 </div>
 
-<!-- PERFORMANCE -->
-<div id=performance-page class="page-content">
+<div id=performance-page class="pc">
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-<div class="card">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fas fa-tachometer-alt text-orange-500"></i>DOM Metrics</h3>
-<div id=perf-content class="space-y-3"></div>
-</div>
-<div class="card">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fas fa-layer-group text-purple-500"></i>Resource Breakdown</h3>
-<div id=res-breakdown class="space-y-2"></div>
-</div>
+<div class="cd"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fas fa-tachometer-alt text-orange-500"></i>DOM Metrics</h3><div id=pc2 class="space-y-3"></div></div>
+<div class="cd"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fas fa-layer-group text-purple-500"></i>Resource Breakdown</h3><div id=rbd class="space-y-2"></div></div>
 </div>
 </div>
 
-<!-- CLEANED -->
-<div id=cleaned-page class="page-content">
+<div id=cleaned-page class="pc">
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-<div class="card">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-ban text-red-500"></i>Ads Removed</h3>
-<div id=ads-list class="space-y-2 max-h-80 overflow-y-auto"></div>
+<div class="cd"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-ban text-red-500"></i>Ads Removed</h3><div id=al class="space-y-2 max-h-80 overflow-y-auto"></div></div>
+<div class="cd"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-eye-slash text-orange-500"></i>Trackers</h3><div id=tl class="space-y-2 max-h-80 overflow-y-auto"></div></div>
 </div>
-<div class="card">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-eye-slash text-orange-500"></i>Trackers Blocked</h3>
-<div id=trackers-list class="space-y-2 max-h-80 overflow-y-auto"></div>
+<div class="cd mt-4"><div class="grid grid-cols-3 gap-4 text-center"><div><div class="text-3xl font-black text-red-500" id=adc>0</div><div class="text-xs text-gray-500 font-mono mt-1">Ads</div></div><div><div class="text-3xl font-black text-orange-500" id=trc>0</div><div class="text-xs text-gray-500 font-mono mt-1">Trackers</div></div><div><div class="text-3xl font-black text-green-400" id=ctc>0</div><div class="text-xs text-gray-500 font-mono mt-1">Total</div></div></div></div>
+</div>
+
+<div id=bot-page class="pc">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4"><div class="cd flex flex-col items-center text-center"><div class="text-4xl mb-3" id=bi>🤖</div><div class="text-white font-black text-lg" id=bby></div><div class="text-xs text-gray-500 font-mono mt-1">Bypass Difficulty</div><div class="flex gap-2 mt-3 flex-wrap justify-center" id=bbg></div></div><div class="cd md:col-span-2"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-shield-virus text-red-500"></i>Signals</h3><div id=bsi class="space-y-2 max-h-80 overflow-y-auto"></div></div></div>
+<div class="cd"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-server text-blue-500"></i>Headers</h3><div id=bh class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 max-h-64 overflow-y-auto"></div></div>
+</div>
+
+<div id=ai-page class="pc">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4"><div class="cd flex flex-col items-center text-center"><div class="sr mb-3" id=aiR></div><div class="text-xs text-gray-400 font-mono uppercase tracking-wider">AI Likelihood</div><div class="text-xs mt-2 font-mono font-bold" id=aiV></div></div><div class="cd md:col-span-2"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-brain text-purple-500"></i>AI Signals</h3><div id=aiS class="space-y-2 max-h-80 overflow-y-auto"></div></div></div>
+</div>
+
+<!-- OPTIMISE PAGE -->
+<div id=optimise-page class="pc">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+<div class="cd">
+<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fas fa-minus-circle text-red-500"></i>Remove / Strip</h3>
+<div class="space-y-2">
+<label class="ck" id=ck-rads><input type=checkbox id=cb-rads checked><div><div class="cl"><i class="fas fa-ad mr-1 text-red-400"></i>Remove Ads & Ad Scripts</div><div class="cd2">Strips AdSense, Taboola, Outbrain, DoubleClick and 40+ ad selectors</div></div></label>
+<label class="ck" id=ck-rtr><input type=checkbox id=cb-rtr checked><div><div class="cl"><i class="fas fa-eye-slash mr-1 text-orange-400"></i>Remove Trackers</div><div class="cd2">Blocks GA, Facebook Pixel, Hotjar, Clarity, Mixpanel, Segment and 30+ trackers</div></div></label>
+<label class="ck" id=ck-rmt><input type=checkbox id=cb-rmt><div><div class="cl"><i class="fas fa-tags mr-1 text-yellow-400"></i>Remove Generator/Author Meta</div><div class="cd2">Strips meta[name=generator] and meta[name=author] tags</div></div></label>
+<label class="ck" id=ck-rcm><input type=checkbox id=cb-rcm><div><div class="cl"><i class="fas fa-comment-slash mr-1 text-blue-400"></i>Remove HTML Comments</div><div class="cd2">Strips all <!-- --> comment nodes from the document</div></div></label>
+<label class="ck" id=ck-ris><input type=checkbox id=cb-ris><div><div class="cl"><i class="fas fa-paint-brush mr-1 text-purple-400"></i>Remove Inline Styles</div><div class="cd2">Removes all style="" attributes from every element</div></div></label>
+<label class="ck" id=ck-rsc><input type=checkbox id=cb-rsc><div><div class="cl"><i class="fab fa-js-square mr-1 text-yellow-300"></i>Remove All Scripts</div><div class="cd2">Strips every &lt;script&gt; tag (inline + external)</div></div></label>
+<label class="ck" id=ck-rif><input type=checkbox id=cb-rif><div><div class="cl"><i class="fas fa-window-restore mr-1 text-cyan-400"></i>Remove All Iframes</div><div class="cd2">Removes all &lt;iframe&gt; elements including embeds</div></div></label>
 </div>
 </div>
-<div class="card mt-4">
-<div class="grid grid-cols-3 gap-4 text-center">
-<div><div class="text-3xl font-black text-red-500" id=ads-count>0</div><div class="text-xs text-gray-500 font-mono mt-1">Ads Removed</div></div>
-<div><div class="text-3xl font-black text-orange-500" id=trackers-count>0</div><div class="text-xs text-gray-500 font-mono mt-1">Trackers Blocked</div></div>
-<div><div class="text-3xl font-black text-green-400" id=cleaned-total>0</div><div class="text-xs text-gray-500 font-mono mt-1">Total Cleaned</div></div>
+<div class="cd">
+<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fas fa-plus-circle text-green-500"></i>Inject / Enhance</h3>
+<div class="space-y-2">
+<label class="ck" id=ck-aer><input type=checkbox id=cb-aer><div><div class="cl"><i class="fas fa-bug mr-1 text-green-400"></i>Inject Eruda Console</div><div class="cd2">Adds Eruda mobile devtools — tap the floating icon to open JS console, network, DOM inspector</div></div></label>
+<label class="ck" id=ck-aar><input type=checkbox id=cb-aar checked><div><div class="cl"><i class="fas fa-ban mr-1 text-red-400"></i>Add Anti-Redirect Code</div><div class="cd2">Blocks window.open(), location hijacks, and _blank link auto-redirects</div></div></label>
+<label class="ck" id=ck-afi><input type=checkbox id=cb-afi checked><div><div class="cl"><i class="fas fa-search mr-1 text-blue-400"></i>Inject Floating Page Inspector</div><div class="cd2">Adds 🔍 floating button — click to see title, scripts, images, cookies, localStorage stats</div></div></label>
+<label class="ck" id=ck-rl><input type=checkbox id=cb-rl checked><div><div class="cl"><i class="fas fa-link mr-1 text-indigo-400"></i>Rewrite Links via Proxy</div><div class="cd2">All &lt;a href&gt; links rewritten to route through ProxyForge — stay proxied while browsing</div></div></label>
+<label class="ck" id=ck-avm><input type=checkbox id=cb-avm><div><div class="cl"><i class="fas fa-mobile-alt mr-1 text-teal-400"></i>Add Viewport Meta (if missing)</div><div class="cd2">Injects width=device-width,initial-scale=1 if not present</div></div></label>
+</div>
+<div class="mt-4 p-3 bg-black/40 border border-gray-800 rounded-lg text-xs text-gray-500 font-mono">
+<div class="text-gray-400 font-bold mb-1">⚡ Quick Presets</div>
+<div class="flex flex-wrap gap-2 mt-2">
+<button onclick="setPreset('clean')" class="bg bgr cursor-pointer hover:border-red-600">🧹 Clean Only</button>
+<button onclick="setPreset('debug')" class="bg bgr cursor-pointer hover:border-green-600">🐛 Debug Mode</button>
+<button onclick="setPreset('archive')" class="bg bgr cursor-pointer hover:border-blue-600">📦 Archive Mode</button>
+<button onclick="setPreset('none')" class="bg bgr cursor-pointer hover:border-gray-500">✕ None</button>
+<button onclick="setPreset('all')" class="bg bgr cursor-pointer hover:border-yellow-600">✓ All</button>
+</div>
 </div>
 </div>
 </div>
 
-<!-- BOT/WAF -->
-<div id=bot-page class="page-content">
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-<div class="card flex flex-col items-center text-center">
-<div class="text-4xl mb-3" id=bot-icon>🤖</div>
-<div class="text-white font-black text-lg" id=bot-bypass></div>
-<div class="text-xs text-gray-500 font-mono mt-1">Bypass Difficulty</div>
-<div class="flex gap-2 mt-3 flex-wrap justify-center" id=bot-badges></div>
+<div class="cd mb-4">
+<div class="flex flex-wrap items-center justify-between gap-3">
+<div>
+<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2"><i class="fas fa-magic text-red-500"></i>Generate Optimised File</h3>
+<p class="text-xs text-gray-600 mt-1">Select options above then click to fetch + process the page with all selected transformations applied</p>
 </div>
-<div class="card md:col-span-2">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-shield-virus text-red-500"></i>Protection Signals</h3>
-<div id=bot-signals class="space-y-2 max-h-80 overflow-y-auto"></div>
-</div>
-</div>
-<div class="card">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-server text-blue-500"></i>Response Headers</h3>
-<div id=bot-headers class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 max-h-64 overflow-y-auto"></div>
-</div>
-</div>
-
-<!-- AI DETECTION -->
-<div id=ai-page class="page-content">
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-<div class="card flex flex-col items-center text-center">
-<div class="score-ring mb-3" id=ai-ring></div>
-<div class="text-xs text-gray-400 font-mono uppercase tracking-wider">AI Likelihood</div>
-<div class="text-xs mt-2 font-mono font-bold" id=ai-verdict></div>
-</div>
-<div class="card md:col-span-2">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-brain text-purple-500"></i>AI Content Signals</h3>
-<div id=ai-signals class="space-y-2 max-h-80 overflow-y-auto"></div>
+<div class="flex gap-2 flex-wrap">
+<button id=og-btn onclick="runOptimise()" class="bg br2 cursor-pointer hover:border-red-500 text-sm px-4 py-2 font-bold"><i class="fas fa-cog mr-1"></i>Optimise Now</button>
+<button id=og-copy class="bg bgr cursor-pointer hover:border-gray-500 hidden"><i class="fas fa-copy mr-1"></i>Copy HTML</button>
+<button id=og-dl class="bg bg2 cursor-pointer hover:border-green-500 hidden"><i class="fas fa-download mr-1"></i>Download</button>
+<button id=og-insp class="bg bb cursor-pointer hover:border-blue-500 hidden"><i class="fas fa-external-link-alt mr-1"></i>Open Inspector View</button>
 </div>
 </div>
 </div>
 
-<!-- SOURCE -->
-<div id=source-page class="page-content">
-<div class="card">
+<div id=og-status class="hidden cd mb-4">
+<div class="flex items-center gap-3 mb-3">
+<div class="text-xs font-mono text-gray-400 uppercase tracking-wider">Optimisation Results</div>
+<div class="ml-auto flex gap-3 text-xs font-mono">
+<span>Before: <span id=og-s1 class="text-red-400">—</span></span>
+<span>After: <span id=og-s2 class="text-green-400">—</span></span>
+<span>Saved: <span id=og-sv class="text-yellow-400">—</span></span>
+</div>
+</div>
+<div id=og-log-list class="space-y-1 max-h-48 overflow-y-auto"></div>
+</div>
+
+<div id=og-preview-wrap class="hidden">
+<div class="cd mb-4">
 <div class="flex justify-between items-center mb-4">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2"><i class="fas fa-code text-yellow-500"></i>Source Code</h3>
-<button id=copy-src class="badge badge-gray cursor-pointer hover:border-gray-500"><i class="fas fa-copy mr-1"></i>Copy Source</button>
+<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2"><i class="fas fa-code text-yellow-500"></i>Optimised Source</h3>
+<button id=og-copy2 class="bg bgr cursor-pointer"><i class="fas fa-copy mr-1"></i>Copy</button>
 </div>
-<div class="h-[450px] overflow-y-auto rounded border border-gray-800"><pre class="m-0"><code id=code-content class="language-html text-xs !bg-transparent"></code></pre></div>
+<div class="h-72 overflow-y-auto rounded border border-gray-800"><pre class="m-0"><code id=og-code class="language-html text-xs !bg-transparent"></code></pre></div>
 </div>
+<div class="cd">
+<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fas fa-desktop text-orange-500"></i>Optimised Preview <span class="text-gray-600 normal-case font-normal text-xs ml-1">(live render with all selected transformations)</span></h3>
+<iframe id=og-frame class="w-full bg-white rounded border border-gray-800" style="height:600px" title="Optimised preview" loading=lazy></iframe>
 </div>
-
-<!-- PREVIEW -->
-<div id=preview-page class="page-content">
-<div class="card">
-<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fas fa-desktop text-orange-500"></i>Live Preview <span class="text-gray-600 normal-case font-normal">(links auto-proxy)</span></h3>
-<iframe id=preview-frame class="w-full h-[600px] bg-white rounded border border-gray-800" title="Website preview" loading=lazy></iframe>
 </div>
 </div>
 
-</div><!-- /results -->
-</div><!-- /container -->
+<div id=source-page class="pc">
+<div class="cd"><div class="flex justify-between items-center mb-4"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2"><i class="fas fa-code text-yellow-500"></i>Source Code</h3><button id=cs class="bg bgr cursor-pointer hover:border-gray-500"><i class="fas fa-copy mr-1"></i>Copy</button></div><div class="h-[450px] overflow-y-auto rounded border border-gray-800"><pre class="m-0"><code id=cc class="language-html text-xs !bg-transparent"></code></pre></div></div>
+</div>
 
-<!-- DOC BUTTON -->
-<button class=doc-btn onclick="openDoc()" title="Documentation"><i class="fas fa-book"></i></button>
+<div id=preview-page class="pc">
+<div class="cd"><h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fas fa-desktop text-orange-500"></i>Live Preview</h3><iframe id=pf2 class="w-full h-[600px] bg-white rounded border border-gray-800" title="Preview" loading=lazy></iframe></div>
+</div>
+
+</div>
+</div>
+
+<button class=db onclick="openDoc()" title="Docs"><i class="fas fa-book"></i></button>
 
 <!-- MEDIA OVERLAY -->
-<div id=media-overlay class="overlay hidden">
-<div class=overlay-header>
-<div class="flex items-center gap-3">
-<div class="w-7 h-7 bg-red-700 rounded flex items-center justify-center"><i class="fas fa-play text-white text-xs"></i></div>
-<div>
-<div class="text-white font-bold text-sm" id=mo-title>Media Player</div>
-<div class="text-gray-500 text-xs" id=mo-url></div>
-</div>
-</div>
-<button onclick="closeOverlay('media-overlay')" class="text-gray-400 hover:text-white transition-colors p-2"><i class="fas fa-times text-lg"></i></button>
-</div>
-<div class="overlay-body flex flex-col items-center justify-center gap-4">
-<div id=mo-player class="w-full max-w-3xl"></div>
-<div class="flex gap-3">
-<a id=mo-open class="badge badge-red cursor-pointer" target=_blank><i class="fas fa-external-link-alt mr-1"></i>Open Original</a>
-<button onclick="copyText(document.getElementById('mo-url').textContent)" class="badge badge-gray cursor-pointer"><i class="fas fa-copy mr-1"></i>Copy URL</button>
-</div>
-</div>
+<div id=mo class="ov hidden">
+<div class=oh><div class="flex items-center gap-3"><div class="w-7 h-7 bg-red-700 rounded flex items-center justify-center"><i class="fas fa-play text-white text-xs"></i></div><div><div class="text-white font-bold text-sm" id=mot>Media</div><div class="text-gray-500 text-xs" id=mou></div></div></div><button onclick="cO('mo')" class="text-gray-400 hover:text-white p-2"><i class="fas fa-times text-lg"></i></button></div>
+<div class="ob flex flex-col items-center justify-center gap-4"><div id=mop class="w-full max-w-3xl"></div><div class="flex gap-3"><a id=moo class="bg br2 cursor-pointer" target=_blank><i class="fas fa-external-link-alt mr-1"></i>Open</a><button onclick="cT(document.getElementById('mou').textContent)" class="bg bgr cursor-pointer"><i class="fas fa-copy mr-1"></i>Copy URL</button></div></div>
 </div>
 
 <!-- DOC OVERLAY -->
-<div id=doc-overlay class="overlay hidden">
-<div class=overlay-header>
-<div class="flex items-center gap-3">
-<div class="w-7 h-7 bg-red-700 rounded flex items-center justify-center"><i class="fas fa-book text-white text-xs"></i></div>
-<div class="text-white font-bold text-sm">ProxyForge Documentation</div>
-</div>
-<div class="flex gap-3 items-center">
-<button onclick="copyDocMd()" class="badge badge-gray cursor-pointer hover:border-gray-500"><i class="fas fa-copy mr-1"></i>Copy Markdown</button>
-<button onclick="closeOverlay('doc-overlay')" class="text-gray-400 hover:text-white transition-colors p-2"><i class="fas fa-times text-lg"></i></button>
-</div>
-</div>
-<div class="overlay-body max-w-4xl mx-auto">
-<div class="md-doc" id=doc-content></div>
-</div>
+<div id=do2 class="ov hidden">
+<div class=oh><div class="flex items-center gap-3"><div class="w-7 h-7 bg-red-700 rounded flex items-center justify-center"><i class="fas fa-book text-white text-xs"></i></div><div class="text-white font-bold text-sm">Documentation</div></div><div class="flex gap-3 items-center"><button onclick="cT(DOC_MD)" class="bg bgr cursor-pointer"><i class="fas fa-copy mr-1"></i>Copy MD</button><button onclick="cO('do2')" class="text-gray-400 hover:text-white p-2"><i class="fas fa-times text-lg"></i></button></div></div>
+<div class="ob max-w-4xl mx-auto"><div class="md" id=doc></div></div>
 </div>
 
 <script>
-const DOC_MD=`# ProxyForge v4.1 Documentation
+const DOC_MD=`# ProxyForge v4.2 Documentation
 
-> **Advanced Web Extraction, Analysis & Intelligence Platform**
+## New in v4.2: Optimise Tab & Inspector API
 
-## What's New in v4.1
+### Optimise Source Code Tab
+Select any combination of transformations and click **Optimise Now** to get a fully processed file:
 
-- **Own Visual Extraction Engine** — No external APIs. Logo, OG image, favicon, CSS color palette, and screenshot all extracted server-side or via lightweight free thumbnail services
-- **Bot / WAF Detection** — Detects Cloudflare, AWS WAF, Sucuri, Akamai, Fastly, reCAPTCHA, hCaptcha, Turnstile, DataDome, PerimeterX, Kasada, Imperva, rate limiting, and tracking cookies
-- **AI Content Detection** — Linguistic pattern analysis, tool mention scanning, schema markup inspection, sentence length heuristics, and likelihood scoring
-- **Universal Preview Overlay** — Every image, video, audio, iframe, and resource URL is clickable for inline preview with smart YouTube/Vimeo embed rewriting
-- **Smart URL Truncation** — Long URLs displayed as \`start…end\` with full URL in tooltip, never overflowing the UI
-- **Response Headers Inspector** — Full response header dump shown in Bot/WAF tab
+**Remove/Strip options:**
+- Remove Ads (40+ selectors)
+- Remove Trackers (30+ patterns)
+- Remove Generator/Author Meta
+- Remove HTML Comments
+- Remove Inline Styles
+- Remove All Scripts
+- Remove All Iframes
 
----
+**Inject/Enhance options:**
+- Eruda Console (mobile devtools)
+- Anti-Redirect Code (blocks window.open, location hijacks, _blank)
+- Floating Page Inspector (🔍 button with live stats)
+- Rewrite Links via Proxy
+- Add Viewport Meta
 
-## API Endpoints
+**Quick Presets:** Clean Only / Debug Mode / Archive Mode / None / All
+
+### New API Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | \`/api/proxy?url=\` | Processed HTML with links rewritten to proxy |
-| GET | \`/api/html/proxy?url=\` | Processed HTML in JSON wrapper |
-| GET | \`/api/json/proxy?url=\` | Full JSON analysis report |
-| POST | \`/api/proxy\` | Same as GET, URL in body |
-| POST | \`/api/html/proxy\` | Same as GET /html, URL in body |
-| POST | \`/api/json/proxy\` | Same as GET /json, URL in body |
-| GET | \`/api/health\` | Health check, uptime, memory |
-| GET | \`/api/docs\` | API documentation JSON |
+| GET | \`/api/optimize?url=&removeAds=1&addEruda=1\` | GET optimised HTML with options |
+| POST | \`/api/optimize\` | POST with {url, options:{}} body |
+| GET | \`/api/inject-inspector?url=\` | Page with floating inspector + anti-redirect injected |
 
-### Example
-
-\`\`\`bash
-curl "https://your-domain.com/api/json/proxy?url=https://example.com"
-\`\`\`
+### Optimize GET Options (query params, value=1)
+- removeAds, removeTrackers, removeMetaTags, removeComments
+- removeInlineStyles, removeScripts, removeIframes
+- addEruda, addAntiRedirect, addFloatingInspector
+- rewriteLinks, addViewportMeta
 
 ---
 
-## JSON Response Structure
+## Core API Endpoints
 
-\`\`\`json
-{
-  "success": true,
-  "url": "https://example.com",
-  "status": 200,
-  "responseTime": 423,
-  "size": { "original": 85234, "processed": 81000, "compression": "4.97%" },
-  "metadata": {},
-  "analysis": {},
-  "visualData": {},
-  "technologies": [],
-  "seo": {},
-  "security": {},
-  "accessibility": {},
-  "botProtection": {},
-  "aiContent": {},
-  "adsRemoved": {},
-  "responseHeaders": {},
-  "contents": "<html>...</html>",
-  "timestamp": "2025-01-01T00:00:00.000Z",
-  "requestId": "abc123"
-}
-\`\`\`
-
----
-
-## Analysis Modules
-
-### Visual Extraction (Own Engine)
-Extracts without any third-party API:
-- **Logo** — Heuristic search via \`img[src*="logo"]\`, header/nav/brand selectors
-- **OG Image** — From \`og:image\` and \`twitter:image\` meta tags
-- **Favicon** — From \`link[rel="icon"]\` and fallback \`/favicon.ico\`
-- **Color Palette** — CSS \`#rrggbb\` hex extraction from inline styles and \`<style>\` blocks, plus \`theme-color\` meta
-- **Screenshot** — Via \`image.thum.io\` (free, no API key)
-- **Attribution** — Publisher, author, publication date from meta tags
-
-### Bot / WAF Detection
-Analyzes response headers and HTML patterns to identify:
-
-| Protection | Detection Method |
-|-----------|-----------------|
-| Cloudflare | \`cf-ray\` header, \`__cf_bm\` cookie, HTML patterns |
-| AWS CloudFront | \`x-amzn-requestid\`, \`x-amz-cf-id\` headers |
-| Sucuri WAF | \`x-sucuri-id\` header, HTML marker |
-| Akamai | \`x-akamai-request-id\` header |
-| Fastly CDN | \`x-fastly-request-id\` header |
-| Varnish Cache | \`x-varnish\`, \`via\` headers |
-| Google reCAPTCHA | \`g-recaptcha\` class/script in HTML |
-| hCaptcha | \`hcaptcha\` script reference |
-| Cloudflare Turnstile | \`cf-turnstile\` element or script |
-| DataDome | \`datadome\` script reference |
-| PerimeterX | \`px-captcha\` element or script |
-| Kasada | \`kasada\` script reference |
-| Imperva | \`incapsula\` script/cookie |
-| Rate Limiting | \`x-ratelimit-limit\`, \`retry-after\` headers |
-
-**Bypass Difficulty Score**: Easy / Moderate / Hard / Very Hard based on combined active protection count.
-
-### AI Content Detection
-Scores 0–100 likelihood that content is AI-generated:
-
-- **Declaration** — Explicit "AI-generated" labels
-- **Tool Mentions** — ChatGPT, GPT-4, Claude, Gemini, Perplexity, Copilot references
-- **Linguistic Patterns** — "As an AI", "certainly!", "great question", "in conclusion", "it's worth noting"
-- **Sentence Length** — Avg >25 words/sentence correlates with AI verbosity
-- **Schema Markup** — \`AIContent\` type or \`generator\` field in JSON-LD
-
-### SEO Analysis
-Scored 0–100. Checks: title length (50–60 optimal), meta description (150–160), H1 presence/uniqueness, image alt attributes, canonical URL, OG image, robots directives, render-blocking resources.
-
-### Security Analysis
-Checks: HSTS, Content Security Policy, X-Frame-Options, X-Content-Type-Options, mixed content, form HTTP actions, \`document.write()\`, \`innerHTML\` assignment.
-
-### Accessibility (A11y)
-Checks: image alts, input labels, \`html[lang]\`, main/nav landmarks, empty anchors, ARIA attributes.
-
-### Technology Detection
-Identifies 20+ frameworks: WordPress, Shopify, Wix, Squarespace, Drupal, Joomla, Gatsby, Next.js, Nuxt.js, React, Vue.js, Angular, jQuery, Bootstrap, Tailwind CSS, Google Analytics, GTM, Hotjar, Intercom, Cloudflare, Google Fonts, Font Awesome.
-
-### Ad & Tracker Removal
-- **40+ CSS selectors** — AdSense, Taboola, Outbrain, Criteo, Rubicon, DoubleClick, OpenX, AppNexus, and more
-- **30+ tracker regex patterns** — GA, Facebook Pixel, Hotjar, Clarity, Mixpanel, Segment, Heap, FullStory, HubSpot, and more
-- **Inline script removal** — \`googletag\`, \`adsbygoogle\`, \`_gaq\` script blocks
-- **Ad iframes** — DoubleClick, googlesyndication iframes removed
-
----
-
-## Link Rewriting
-
-All \`<a href>\` attributes rewritten to:
-\`\`\`
-/api/proxy?url=https://original-link.com/path
-\`\`\`
-Preview tab browsing stays fully proxied across navigations.
-
----
-
-## Security Processing
-
-Neutralized: \`Content-Security-Policy\`, \`X-Frame-Options\`, \`X-Content-Type-Options\`, \`Strict-Transport-Security\`, \`Referrer-Policy\`, \`Permissions-Policy\`. Injected: \`frame-ancestors *\` CSP to allow embedding.
-
----
-
-## Frontend Tabs
-
-| Tab | Description |
-|-----|-------------|
-| Overview | Status, size, timing, quick stats |
-| Visual | Screenshot, logo, OG image, favicon, color palette |
-| Metadata | All extracted meta tags |
-| Resources | Filterable/searchable resource table — click any item to preview |
-| Media | Video/audio/iframe viewer — click to open overlay player |
-| SEO | Score ring, issues/warnings/passes |
-| Security | Header finding severity levels |
-| A11y | Accessibility score and checks |
-| Technologies | Detected stack grouped by category |
-| Social | Social media link counts |
-| Structure | Headings, links, forms breakdown |
-| Performance | DOM metrics, script/style counts |
-| Cleaned | All removed ads and blocked trackers |
-| Bot/WAF | Protection signals, bypass difficulty, response headers |
-| AI Detect | AI content likelihood score and signals |
-| Source | Syntax-highlighted processed HTML |
-| Preview | Live iframe with auto-proxied links |
-
----
-
-## Universal Preview Overlay
-
-Clicking any resource, image, video, audio, or iframe URL opens the overlay:
-- **Images** — Full-size display with object-contain scaling
-- **Videos** — Native HTML5 \`<video>\` player with controls
-- **Audio** — Native \`<audio>\` player
-- **YouTube** — Auto-converted to \`/embed/\` URL
-- **Vimeo** — Auto-converted to \`player.vimeo.com\`
-- **Other iframes** — Embedded directly
-- **Other files** — "Open in new tab" fallback
-
-URL display uses **start…end truncation** — first 30 chars + last 25 chars — with full URL in tooltip.
-
----
-
-## Stack
-
-- **Runtime**: Node.js ≥ 18  
-- **Framework**: Express 4  
-- **HTML Parsing**: Cheerio  
-- **HTTP Client**: Axios  
-- **Screenshot**: image.thum.io (free, no key)  
-- **No external paid APIs required**
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | \`/api/proxy?url=\` | Proxied HTML |
+| GET | \`/api/json/proxy?url=\` | Full JSON analysis |
+| GET | \`/api/health\` | Health check |
 `;
 
-let allResources=[],currentUrl='',apiBase=window.location.origin;
+let allRes=[],curUrl='',aB=window.location.origin;
 
 function $(id){return document.getElementById(id)}
-function qs(sel,ctx=document){return ctx.querySelector(sel)}
-function truncate(s,n=50){return s&&s.length>n?s.slice(0,n)+'…':s||''}
-function formatBytes(b){if(!b)return'0 B';const k=1024,s=['B','KB','MB','GB'],i=Math.floor(Math.log(b)/Math.log(k));return(b/Math.pow(k,i)).toFixed(2)+' '+s[i]}
-function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-function copyText(t,btn=null){navigator.clipboard.writeText(t).then(()=>{if(btn){const o=btn.innerHTML;btn.innerHTML='<i class="fas fa-check mr-1"></i>Copied!';btn.classList.add('badge-green');setTimeout(()=>{btn.innerHTML=o;btn.classList.remove('badge-green')},2000)}})}
-function copyEl(id,label){const t=$( id)?.innerText||'';copyText(t)}
+function tr2(s,n=50){return s&&s.length>n?s.slice(0,n)+'…':s||''}
+function fB(b){if(!b)return'0 B';const k=1024,si=['B','KB','MB','GB'],i=Math.floor(Math.log(b)/Math.log(k));return(b/Math.pow(k,i)).toFixed(2)+' '+si[i]}
+function eH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function cT(t,btn=null){navigator.clipboard.writeText(t).then(()=>{if(btn){const o=btn.innerHTML;btn.innerHTML='<i class="fas fa-check mr-1"></i>Copied!';btn.classList.add('bg2');setTimeout(()=>{btn.innerHTML=o;btn.classList.remove('bg2')},2000)}})}
+function cEl(id,label){const t=$(id)?.innerText||'';cT(t)}
+function sRing(cid,score,color){const c=color||(score>=80?'#4ade80':score>=60?'#facc15':'#ef4444');const r=34,ci=2*Math.PI*r,da=ci*(score/100);$(cid).innerHTML=`<svg width="80" height="80" viewBox="0 0 80 80"><circle cx="40" cy="40" r="${r}" fill="none" stroke="#1f2937" stroke-width="7"/><circle cx="40" cy="40" r="${r}" fill="none" stroke="${c}" stroke-width="7" stroke-dasharray="${da} ${ci}" stroke-linecap="round"/></svg><div class="st"><span style="font-size:1.3rem;font-weight:900;color:${c}">${score}</span><span style="font-size:.55rem;color:#6b7280;letter-spacing:.06em">/ 100</span></div>`}
+function mRow(label,val){if(!val)return'';return`<div class="cs"><div class="text-xs text-gray-500 font-mono mb-1 uppercase tracking-wider">${eH(label)}</div><div class="text-xs text-gray-200 break-all">${eH(val)}</div></div>`}
+function sCard(icon,color,label,val){return`<div class="cd flex items-center gap-3"><div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background:${color}18"><i class="${icon}" style="color:${color}"></i></div><div><div class="text-xl font-black text-white">${val}</div><div class="text-xs text-gray-500 font-mono">${label}</div></div></div>`}
+function kR(label,val,color='#9ca3af'){return`<div class="flex justify-between items-center py-1.5 border-b border-gray-900"><span class="text-xs text-gray-500 font-mono">${label}</span><span class="text-xs font-mono" style="color:${color}">${val}</span></div>`}
+function pR(label,val,max,color){const pt=Math.min(100,max>0?(val/max)*100:0);return`<div><div class="flex justify-between text-xs mb-1"><span class="text-gray-500 font-mono">${label}</span><span style="color:${color}">${val}</span></div><div class="pb"><div class="pf" style="width:${pt}%;background:${color}"></div></div></div>`}
 
-function scoreRing(containerId,score,color){
-  const c=color||( score>=80?'#4ade80':score>=60?'#facc15':'#ef4444');
-  const r=34,circ=2*Math.PI*r,dash=circ*(score/100);
-  $(containerId).innerHTML=`<svg width="80" height="80" viewBox="0 0 80 80"><circle cx="40" cy="40" r="${r}" fill="none" stroke="#1f2937" stroke-width="7"/><circle cx="40" cy="40" r="${r}" fill="none" stroke="${c}" stroke-width="7" stroke-dasharray="${dash} ${circ}" stroke-linecap="round"/></svg><div class="score-text"><span style="font-size:1.3rem;font-weight:900;color:${c}">${score}</span><span style="font-size:.55rem;color:#6b7280;letter-spacing:.06em">/ 100</span></div>`;
+function oP(url,type,title){
+  const $mo=$('mo');$('mot').textContent=title||type;
+  const disp=url.length>60?url.slice(0,30)+'…'+url.slice(-25):url;
+  $('mou').textContent=disp;$('mou').title=url;$('moo').href=url;
+  let pl='';
+  if(type==='image')pl=`<img src="${eH(url)}" class="max-w-full max-h-[75vh] object-contain rounded-lg border border-gray-800 mx-auto block" loading=lazy>`;
+  else if(type==='video'||url.match(/\.(mp4|webm|ogg|mov)(\?|$)/i))pl=`<video controls class="w-full rounded-lg max-h-[70vh] bg-black" src="${eH(url)}"></video>`;
+  else if(type==='audio'||url.match(/\.(mp3|wav|ogg|aac)(\?|$)/i))pl=`<div class="w-full max-w-2xl mx-auto p-8 cs text-center"><i class="fas fa-music text-purple-400 text-4xl mb-4 block"></i><audio controls class="w-full mt-2" src="${eH(url)}"></audio></div>`;
+  else if(type==='embed'||type==='iframe'){const yt=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?/]+)/);const eu=yt?`https://www.youtube.com/embed/${yt[1]}`:url.includes('vimeo.com')?url.replace(/vimeo\.com\/(\d+)/,'player.vimeo.com/video/$1'):url;pl=`<iframe src="${eH(eu)}" class="w-full rounded-lg border border-gray-800" style="height:70vh;min-height:400px" allowfullscreen frameborder="0"></iframe>`;}
+  else pl=`<div class="cs text-center p-8"><i class="fas fa-file text-gray-600 text-3xl mb-3 block"></i><div class="text-gray-400 text-sm mb-4">No preview</div><a href="${eH(url)}" target=_blank class="bg br2">Open</a></div>`;
+  $('mop').innerHTML=pl;$mo.classList.remove('hidden');
 }
 
-function metaRow(label,val){if(!val)return'';return`<div class="card-sm"><div class="text-xs text-gray-500 font-mono mb-1 uppercase tracking-wider">${escHtml(label)}</div><div class="text-xs text-gray-200 break-all">${escHtml(val)}</div></div>`}
-function statCard(icon,color,label,val){return`<div class="card flex items-center gap-3"><div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background:${color}18"><i class="${icon}" style="color:${color}"></i></div><div><div class="text-xl font-black text-white">${val}</div><div class="text-xs text-gray-500 font-mono">${label}</div></div></div>`}
-function kvRow(label,val,color='#9ca3af'){return`<div class="flex justify-between items-center py-1.5 border-b border-gray-900"><span class="text-xs text-gray-500 font-mono">${label}</span><span class="text-xs font-mono" style="color:${color}">${val}</span></div>`}
-function progressRow(label,val,max,color){const pct=Math.min(100,max>0?(val/max)*100:0);return`<div><div class="flex justify-between text-xs mb-1"><span class="text-gray-500 font-mono">${label}</span><span style="color:${color}">${val}</span></div><div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${color}"></div></div></div>`}
+function openDoc(){$('doc').innerHTML=rMd(DOC_MD);$('do2').classList.remove('hidden')}
+function cO(id){$(id).classList.add('hidden');$('mop').innerHTML=''}
+function rMd(md){let h=md.replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/^> (.+)$/gm,'<blockquote>$1</blockquote>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/`([^`]+)`/g,'<code>$1</code>').replace(/```(\w*)\n([\s\S]*?)```/g,(m,l,code)=>`<pre><code class="language-${l||'bash'}">${eH(code.trim())}</code></pre>`).replace(/^\|(.+)\|$/gm,(m)=>{const cs=m.split('|').filter((_,i)=>i>0&&i<m.split('|').length-1);return'<tr>'+cs.map(c=>c.trim().match(/^[-:]+$/)? '':`<td>${c.trim()}</td>`).join('')+'</tr>'}).replace(/^---$/gm,'<hr class="border-gray-800 my-4">').replace(/\n\n/g,'</p><p>');h=h.replace(/<tr><\/tr>/g,'');h=h.replace(/(<tr>[\s\S]+?<\/tr>)/g,(m,rows)=>{if(rows.includes('<td>'))return`<table>${rows}</table>`;return rows});return`<div>${h}</div>`}
 
-function openPreview(url,type,title){
-  $('mo-title').textContent=title||type;
-  const display=url.length>60?url.slice(0,30)+'…'+url.slice(-25):url;
-  $('mo-url').textContent=display;$('mo-url').title=url;$('mo-open').href=url;
-  let player='';
-  if(type==='image')player=`<img src="${escHtml(url)}" class="max-w-full max-h-[75vh] object-contain rounded-lg border border-gray-800 mx-auto block" loading=lazy onerror="this.insertAdjacentHTML('afterend','<p class=text-red-400>Failed to load image</p>')">`;
-  else if(type==='video'||url.match(/\.(mp4|webm|ogg|mov|avi)(\?|$)/i))player=`<video controls class="w-full rounded-lg max-h-[70vh] bg-black" src="${escHtml(url)}"><p class="text-gray-400 text-sm p-4">Browser cannot play this video. <a href="${escHtml(url)}" target=_blank class="text-red-400 underline">Open directly</a></p></video>`;
-  else if(type==='audio'||url.match(/\.(mp3|wav|ogg|aac|flac)(\?|$)/i))player=`<div class="w-full max-w-2xl mx-auto p-8 card-sm text-center"><i class="fas fa-music text-purple-400 text-4xl mb-4 block"></i><audio controls class="w-full mt-2" src="${escHtml(url)}"></audio></div>`;
-  else if(type==='embed'||type==='iframe'){const ytMatch=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?/]+)/);const embedUrl=ytMatch?`https://www.youtube.com/embed/${ytMatch[1]}`:url.includes('vimeo.com')?url.replace(/vimeo\.com\/(\d+)/,'player.vimeo.com/video/$1'):url;player=`<iframe src="${escHtml(embedUrl)}" class="w-full rounded-lg border border-gray-800" style="height:70vh;min-height:400px" allowfullscreen allow="autoplay;fullscreen;picture-in-picture" frameborder="0"></iframe>`;}
-  else player=`<div class="card-sm text-center p-8"><i class="fas fa-file text-gray-600 text-3xl mb-3 block"></i><div class="text-gray-400 text-sm mb-4">Preview not available for this file type</div><a href="${escHtml(url)}" target=_blank class="badge badge-red">Open in new tab</a></div>`;
-  $('mo-player').innerHTML=player;$('media-overlay').classList.remove('hidden');
-}
-function openMediaOverlay(url,type,title){openPreview(url,type,title)}
-function openDoc(){
-  $('doc-content').innerHTML=renderMd(DOC_MD);
-  $('doc-overlay').classList.remove('hidden');
-}
-function closeOverlay(id){$(id).classList.add('hidden');$('mo-player').innerHTML=''}
-function copyDocMd(){copyText(DOC_MD)}
-
-function renderMd(md){
-  let h=md
-    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
-    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
-    .replace(/^# (.+)$/gm,'<h1>$1</h1>')
-    .replace(/^> (.+)$/gm,'<blockquote>$1</blockquote>')
-    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-    .replace(/`([^`]+)`/g,'<code>$1</code>')
-    .replace(/```(\w*)\n([\s\S]*?)```/g,(m,lang,code)=>`<pre><code class="language-${lang||'bash'}">${escHtml(code.trim())}</code></pre>`)
-    .replace(/^\|(.+)\|$/gm,(m)=>{const cells=m.split('|').filter((_,i)=>i>0&&i<m.split('|').length-1);return'<tr>'+cells.map(c=>c.trim().match(/^[-:]+$/)? '':`<td>${c.trim()}</td>`).join('')+'</tr>'})
-    .replace(/^---$/gm,'<hr class="border-gray-800 my-4">')
-    .replace(/\n\n/g,'</p><p>');
-  h=h.replace(/<tr><\/tr>/g,'');
-  h=h.replace(/(<tr>[\s\S]+?<\/tr>)/g,(m,rows)=>{if(rows.includes('<td>'))return`<table>${rows}</table>`;return rows});
-  return`<div>${h}</div>`;
-}
-
-document.querySelectorAll('.nav-tab').forEach(btn=>{
+document.querySelectorAll('.nt').forEach(btn=>{
   btn.addEventListener('click',()=>{
-    document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.page-content').forEach(p=>p.classList.remove('active'));
-    btn.classList.add('active');
-    $(`${btn.dataset.page}-page`).classList.add('active');
-    if(btn.dataset.page==='resources'&&allResources.length)renderResources(allResources);
+    document.querySelectorAll('.nt').forEach(t=>t.classList.remove('ac'));
+    document.querySelectorAll('.pc').forEach(p=>p.classList.remove('ac'));
+    btn.classList.add('ac');$(`${btn.dataset.p}-page`).classList.add('ac');
+    if(btn.dataset.p==='resources'&&allRes.length)rRes(allRes);
   });
 });
 
-$('res-filter').addEventListener('change',e=>{
-  const f=e.target.value,s=$('res-search').value.toLowerCase();
-  renderResources(filterResources(f,s));
-});
-$('res-search').addEventListener('input',e=>{
-  const s=e.target.value.toLowerCase(),f=$('res-filter').value;
-  renderResources(filterResources(f,s));
-});
-function filterResources(type,search){
-  return allResources.filter(r=>{
-    const typeOk=type==='all'||r.type===type;
-    const searchOk=!search||(r.url||'').toLowerCase().includes(search)||(r.text||r.alt||r.title||'').toLowerCase().includes(search);
-    return typeOk&&searchOk;
-  });
-}
+$('rf').addEventListener('change',e=>{const f=e.target.value,s=$('rs2').value.toLowerCase();rRes(fRes(f,s))});
+$('rs2').addEventListener('input',e=>{const s=e.target.value.toLowerCase(),f=$('rf').value;rRes(fRes(f,s))});
+function fRes(type,search){return allRes.filter(r=>{const to=type==='all'||r.type===type;const so=!search||(r.url||'').toLowerCase().includes(search)||(r.text||r.alt||r.title||'').toLowerCase().includes(search);return to&&so})}
 
-function renderResources(list){
-  const tbody=$('res-tbody');
-  $('res-count').textContent=`(${list.length})`;
-  if(!list.length){tbody.innerHTML='<tr><td colspan=5 class="py-6 text-center text-gray-600 font-mono text-xs">No resources found</td></tr>';return}
-  tbody.innerHTML=list.map(r=>{
-    const preview=r.type==='image'?`<img src="${escHtml(r.url)}" class="w-10 h-10 object-cover rounded border border-gray-800 cursor-pointer hover:opacity-80 transition-opacity" loading=lazy onerror="this.style.display='none'" onclick="event.stopPropagation();openPreview('${escHtml(r.url)}','image','${escHtml(truncate(r.alt||r.url,40))}')" title="Click to preview">`:`<i class="${r.icon||'fas fa-file'} text-gray-600 cursor-pointer hover:text-red-500 transition-colors" onclick="openPreview('${escHtml(r.url)}','${r.type==='media'?'video':r.type}','${escHtml(truncate(r.url,40))}')" title="Click to open"></i>`;
-    const typeColor={image:'badge-blue',link:'badge-gray',script:'badge-yellow',stylesheet:'badge-purple',media:'badge-red',embed:'badge-green'}[r.type]||'badge-gray';
-    const urlDisp=r.url.length>55?r.url.slice(0,28)+'…'+r.url.slice(-22):r.url;
-    return`<tr class="resource-row"><td class="py-2 px-2"><span class="badge ${typeColor}">${r.type}</span>${r.subtype?`<br><span class="text-xs text-gray-600 mt-0.5 inline-block">${r.subtype}</span>`:''}</td><td class="py-2 px-2 text-xs text-gray-400 max-w-[150px] truncate" title="${escHtml(r.text||r.alt||r.title||r.type)}">${escHtml(truncate(r.text||r.alt||r.title||r.type,30))}</td><td class="py-2 px-2 text-center">${preview}</td><td class="py-2 px-2 max-w-[220px]"><span class="text-xs text-gray-500 font-mono cursor-pointer hover:text-red-400 transition-colors" title="${escHtml(r.url)}" onclick="openPreview('${escHtml(r.url)}','${r.type==='image'?'image':r.type==='media'||r.type==='embed'?r.type:'link'}','${escHtml(truncate(r.text||r.alt||r.url,40))}')">${escHtml(urlDisp)}</span></td><td class="py-2 px-2 text-center"><button onclick="copyText('${escHtml(r.url)}')" class="badge badge-gray cursor-pointer text-xs hover:border-gray-500"><i class="fas fa-copy"></i></button></td>`;
-  }).join('');
-}
+function rRes(list){const tb=$('rb');$('rc').textContent=`(${list.length})`;if(!list.length){tb.innerHTML='<tr><td colspan=5 class="py-6 text-center text-gray-600 font-mono text-xs">No resources</td></tr>';return}tb.innerHTML=list.map(r=>{const pv=r.type==='image'?`<img src="${eH(r.url)}" class="w-10 h-10 object-cover rounded border border-gray-800 cursor-pointer hover:opacity-80" loading=lazy onerror="this.style.display='none'" onclick="event.stopPropagation();oP('${eH(r.url)}','image','${eH(tr2(r.alt||r.url,40))}')" title="Preview">`:` <i class="${r.icon||'fas fa-file'} text-gray-600 cursor-pointer hover:text-red-500" onclick="oP('${eH(r.url)}','${r.type==='media'?'video':r.type}','${eH(tr2(r.url,40))}')" title="Open"></i>`;const tc={image:'bb',link:'bgr',script:'by',stylesheet:'bp',media:'br2',embed:'bg2'}[r.type]||'bgr';const ud=r.url.length>55?r.url.slice(0,28)+'…'+r.url.slice(-22):r.url;return`<tr class="rr"><td class="py-2 px-2"><span class="bg ${tc}">${r.type}</span>${r.subtype?`<br><span class="text-xs text-gray-600">${r.subtype}</span>`:''}</td><td class="py-2 px-2 text-xs text-gray-400 max-w-[150px] truncate" title="${eH(r.text||r.alt||r.title||r.type)}">${eH(tr2(r.text||r.alt||r.title||r.type,30))}</td><td class="py-2 px-2 text-center">${pv}</td><td class="py-2 px-2 max-w-[220px]"><span class="text-xs text-gray-500 font-mono cursor-pointer hover:text-red-400" title="${eH(r.url)}" onclick="oP('${eH(r.url)}','${r.type==='image'?'image':r.type==='media'||r.type==='embed'?r.type:'link'}','${eH(tr2(r.text||r.alt||r.url,40))}')">${eH(ud)}</span></td><td class="py-2 px-2 text-center"><button onclick="cT('${eH(r.url)}')" class="bg bgr cursor-pointer text-xs hover:border-gray-500"><i class="fas fa-copy"></i></button></td></tr>`}).join('')}
 
-$('proxy-form').addEventListener('submit',async e=>{
-  e.preventDefault();
-  const url=$('url-input').value.trim();if(!url)return;
-  currentUrl=url;
-  $('fetch-btn').disabled=true;$('spinner').classList.remove('hidden');
-  $('msg').innerHTML='<i class="fas fa-spinner fa-spin text-red-500 mr-2"></i><span class="text-gray-400">Fetching and analyzing...</span>';
-  $('results').classList.add('hidden');$('page-nav').classList.add('hidden');
+$('pf').addEventListener('submit',async e=>{
+  e.preventDefault();const url=$('ui').value.trim();if(!url)return;
+  curUrl=url;$('fb').disabled=true;$('sp').classList.remove('hidden');
+  $('mg').innerHTML='<i class="fas fa-spinner fa-spin text-red-500 mr-2"></i><span class="text-gray-400">Fetching and analyzing...</span>';
+  $('rs').classList.add('hidden');$('pn').classList.add('hidden');
   try{
-    const r=await fetch(`${apiBase}/api/json/proxy?url=${encodeURIComponent(url)}`);
-    if(!r.ok)throw new Error(`HTTP ${r.status}: ${r.statusText}`);
-    const data=await r.json();
-    if(!data.success)throw new Error(data.error||'Failed to fetch');
-    renderAll(data,url);
-  }catch(err){
-    $('msg').innerHTML=`<i class="fas fa-exclamation-triangle text-red-500 mr-2"></i><span class="text-red-400">${escHtml(err.message)}</span>`;
-  }finally{$('fetch-btn').disabled=false;$('spinner').classList.add('hidden')}
+    const r=await fetch(`${aB}/api/json/proxy?url=${encodeURIComponent(url)}`);
+    if(!r.ok)throw new Error(`HTTP ${r.status}`);
+    const data=await r.json();if(!data.success)throw new Error(data.error||'Failed');
+    rAll(data,url);
+  }catch(err){$('mg').innerHTML=`<i class="fas fa-exclamation-triangle text-red-500 mr-2"></i><span class="text-red-400">${eH(err.message)}</span>`;}
+  finally{$('fb').disabled=false;$('sp').classList.add('hidden')}
 });
 
-$('copy-src').addEventListener('click',()=>copyText($('code-content').textContent,$('copy-src')));
+$('cs').addEventListener('click',()=>cT($('cc').textContent,$('cs')));
+$('og-copy2').addEventListener('click',()=>cT($('og-code').textContent));
 
-function renderAll(data,url){
-  allResources=data.analysis?.resources||[];
-  $('msg').innerHTML=`<span class="text-green-400"><i class="fas fa-check-circle mr-2"></i>Analysis complete — ${allResources.length} resources extracted</span>`;
-  $('page-nav').classList.remove('hidden');$('results').classList.remove('hidden');
+function setPreset(p){const cbs={rads:false,rtr:false,rmt:false,rcm:false,ris:false,rsc:false,rif:false,aer:false,aar:false,afi:false,rl:false,avm:false};const presets={clean:{rads:true,rtr:true,aar:true,rl:true},debug:{rads:true,rtr:true,aer:true,afi:true,aar:true,rl:true},archive:{rads:true,rtr:true,rmt:true,rcm:true,rl:true,avm:true},none:{},all:{rads:true,rtr:true,rmt:true,rcm:true,ris:true,rsc:true,rif:true,aer:true,aar:true,afi:true,rl:true,avm:true}};const set={...cbs,...(presets[p]||{})};Object.entries(set).forEach(([k,v])=>{const cb=$(`cb-${k}`);if(cb)cb.checked=v;const lbl=$(`ck-${k}`);if(lbl){if(v)lbl.classList.add('en');else lbl.classList.remove('en')}});updateCheckStyles()}
 
-  // Overview
-  $('stat-cards').innerHTML=[
-    statCard('fas fa-cubes','#ef4444','Resources',allResources.length),
-    statCard('fas fa-file-word','#60a5fa','Words',(data.analysis?.wordCount||0).toLocaleString()),
-    statCard('fas fa-clock','#facc15','Response',`${data.responseTime}ms`),
-    statCard('fas fa-broom','#4ade80','Cleaned',data.adsRemoved?.totalCleaned||0)
-  ].join('');
-  $('ov-status').innerHTML=kvRow('HTTP Status',`${data.status} ${data.statusText}`,'#4ade80')+kvRow('Content Type',truncate(data.contentType,35))+kvRow('Read Time',`~${data.analysis?.readingTime||0} min`,'#60a5fa');
-  $('ov-size').innerHTML=kvRow('Original',formatBytes(data.size?.original))+kvRow('Processed',formatBytes(data.size?.processed))+kvRow('Saved',data.size?.compression,'#4ade80');
-  $('ov-timing').innerHTML=kvRow('Response',`${data.responseTime}ms`,'#facc15')+kvRow('Timestamp',new Date(data.timestamp).toLocaleTimeString())+kvRow('Request ID',data.requestId?.slice(0,8),'#c084fc');
+function updateCheckStyles(){['rads','rtr','rmt','rcm','ris','rsc','rif','aer','aar','afi','rl','avm'].forEach(k=>{const cb=$(`cb-${k}`);const lbl=$(`ck-${k}`);if(cb&&lbl){if(cb.checked)lbl.classList.add('en');else lbl.classList.remove('en')}})}
 
-  // Visual — use our own extracted data
-  const vd=data.visualData||{};
-  const vis=[];
-  if(vd.screenshot)vis.push(`<div class="card-sm cursor-pointer" onclick="openPreview('${escHtml(vd.screenshot)}','image','Screenshot')"><div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider flex items-center justify-between">Screenshot <span class="badge badge-gray">click to expand</span></div><img src="${escHtml(vd.screenshot)}" class="w-full rounded border border-gray-800 max-h-48 object-cover hover:opacity-90 transition-opacity" loading=lazy onerror="this.parentElement.style.display='none'"></div>`);
-  if(vd.ogImage)vis.push(`<div class="card-sm cursor-pointer" onclick="openPreview('${escHtml(vd.ogImage)}','image','OG Image')"><div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider flex items-center justify-between">OG Image <span class="badge badge-gray">click to expand</span></div><img src="${escHtml(vd.ogImage)}" class="w-full rounded border border-gray-800 max-h-40 object-cover hover:opacity-90 transition-opacity" loading=lazy onerror="this.parentElement.style.display='none'"></div>`);
-  if(vd.logo)vis.push(`<div class="card-sm cursor-pointer" onclick="openPreview('${escHtml(vd.logo)}','image','Site Logo')"><div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider flex items-center justify-between">Logo <span class="badge badge-gray">click</span></div><img src="${escHtml(vd.logo)}" class="max-h-16 object-contain hover:opacity-90 transition-opacity" loading=lazy onerror="this.parentElement.style.display='none'"></div>`);
-  if(vd.favicon)vis.push(`<div class="card-sm"><div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider">Favicon</div><div class="flex items-center gap-3"><img src="${escHtml(vd.favicon)}" class="w-8 h-8 object-contain" loading=lazy onerror="this.style.display='none'"><span class="text-xs text-gray-500 font-mono break-all">${escHtml(truncate(vd.favicon,50))}</span></div></div>`);
-  if(vd.palette?.length)vis.push(`<div class="card-sm"><div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider">Extracted Colors</div><div class="flex flex-wrap gap-2">${vd.palette.map(c=>`<div class="flex flex-col items-center gap-1"><div class="w-8 h-8 rounded border border-gray-700 cursor-pointer hover:scale-110 transition-transform" style="background:${c}" title="${c}" onclick="copyText('${c}')"></div><span class="text-xs text-gray-600 font-mono">${c}</span></div>`).join('')}</div></div>`);
-  if(vd.publisher||vd.author)vis.push(`<div class="card-sm"><div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider">Attribution</div>${vd.publisher?`<div class="text-xs mb-1"><span class="text-gray-500">Publisher: </span><span class="text-gray-200">${escHtml(vd.publisher)}</span></div>`:''} ${vd.author?`<div class="text-xs mb-1"><span class="text-gray-500">Author: </span><span class="text-gray-200">${escHtml(vd.author)}</span></div>`:''} ${vd.date?`<div class="text-xs"><span class="text-gray-500">Date: </span><span class="text-gray-200">${escHtml(vd.date)}</span></div>`:''}</div>`);
-  $('visual-content').innerHTML=vis.join('')||'<div class="col-span-full text-center text-gray-600 py-8 font-mono text-xs">No visual data available</div>';
+['rads','rtr','rmt','rcm','ris','rsc','rif','aer','aar','afi','rl','avm'].forEach(k=>{const cb=$(`cb-${k}`);if(cb)cb.addEventListener('change',()=>updateCheckStyles())});
 
-  // Metadata
-  const md=data.metadata||{};
-  $('metadata-grid').innerHTML=Object.entries(md).filter(([,v])=>v).map(([k,v])=>metaRow(k.replace(/([A-Z])/g,' $1'),v)).join('')||'<div class="text-gray-600 text-xs">No metadata</div>';
+updateCheckStyles();
 
-  // Resources
-  renderResources(allResources);
+let ogHtml='';
 
-  // Media
-  const {media=[],iframes=[]}=data.analysis||{};
-  const videos=media.filter(m=>m.type==='video');const audios=media.filter(m=>m.type==='audio');
-  $('media-videos').innerHTML=videos.length?videos.map(v=>{const disp=v.url.length>55?v.url.slice(0,28)+'…'+v.url.slice(-22):v.url;return`<div class="media-card cursor-pointer" onclick="openPreview('${escHtml(v.url)}','video','${escHtml(truncate(v.url,40))}')"><div class="bg-black aspect-video flex items-center justify-center relative overflow-hidden">${v.poster?`<img src="${escHtml(v.poster)}" class="w-full h-full object-cover absolute inset-0" loading=lazy>`:''}<div class="absolute inset-0 flex items-center justify-center bg-black/40 hover:bg-black/20 transition-colors"><div class="w-12 h-12 bg-red-700/90 rounded-full flex items-center justify-center shadow-lg"><i class="fas fa-play text-white text-sm ml-0.5"></i></div></div></div><div class="p-2"><div class="text-xs text-gray-400 font-mono truncate" title="${escHtml(v.url)}">${escHtml(disp)}</div>${v.width&&v.height?`<div class="text-xs text-gray-700 mt-0.5">${v.width}×${v.height}</div>`:''}</div></div>`}).join(''):'<div class="text-gray-600 text-xs col-span-full font-mono py-4">No video files detected</div>';
-  $('media-audios').innerHTML=audios.length?audios.map(a=>{const disp=a.url.length>55?a.url.slice(0,28)+'…'+a.url.slice(-22):a.url;return`<div class="media-card cursor-pointer p-3 hover:border-purple-700 transition-colors" onclick="openPreview('${escHtml(a.url)}','audio','${escHtml(truncate(a.url,40))}')"><div class="flex items-center gap-3"><div class="w-10 h-10 bg-purple-900/40 rounded-full flex items-center justify-center flex-shrink-0 hover:bg-purple-900/70 transition-colors"><i class="fas fa-music text-purple-400"></i></div><div class="min-w-0"><div class="text-xs text-gray-400 font-mono truncate" title="${escHtml(a.url)}">${escHtml(disp)}</div>${a.mimeType?`<div class="text-xs text-gray-700 mt-0.5">${escHtml(a.mimeType)}</div>`:''}</div></div></div>`}).join(''):'<div class="text-gray-600 text-xs col-span-full font-mono py-4">No audio files detected</div>';
-  $('media-iframes').innerHTML=iframes.length?iframes.map(f=>{
-    const tag=f.isYoutube?'<span class="badge badge-red ml-1">YouTube</span>':f.isVimeo?'<span class="badge badge-blue ml-1">Vimeo</span>':f.isMap?'<span class="badge badge-green ml-1">Map</span>':f.isSocial?'<span class="badge badge-purple ml-1">Social</span>':'';
-    const disp=f.url.length>55?f.url.slice(0,28)+'…'+f.url.slice(-22):f.url;
-    return`<div class="media-card cursor-pointer p-3" onclick="openPreview('${escHtml(f.url)}','embed','${escHtml(truncate(f.title||f.url,40))}')"><div class="flex items-center gap-3"><div class="w-10 h-10 bg-blue-900/40 rounded-full flex items-center justify-center flex-shrink-0"><i class="fas fa-window-restore text-blue-400"></i></div><div class="min-w-0"><div class="text-xs text-gray-300 font-mono flex items-center gap-1 flex-wrap">${tag}</div><div class="text-xs text-gray-500 font-mono mt-0.5 truncate" title="${escHtml(f.url)}">${escHtml(disp)}</div>${f.width&&f.height?`<div class="text-xs text-gray-700">${f.width}×${f.height}</div>`:''}</div></div></div>`;
-  }).join(''):'<div class="text-gray-600 text-xs col-span-full">No iframes detected</div>';
-
-  // SEO
-  const seo=data.seo||{score:0,issues:[],warnings:[],passed:[]};
-  scoreRing('seo-ring',seo.score);
-  $('seo-counts').textContent=`${seo.passed?.length||0}P · ${seo.warnings?.length||0}W · ${seo.issues?.length||0}E`;
-  const allChecks=[...(seo.issues||[]).map(i=>({...i,cls:'seo-error',icon:'fas fa-times-circle text-red-500'})),...(seo.warnings||[]).map(w=>({...w,cls:'seo-warn',icon:'fas fa-exclamation-circle text-yellow-500'})),...(seo.passed||[]).map(p=>({...p,cls:'seo-pass',icon:'fas fa-check-circle text-green-500'}))];
-  $('seo-checks').innerHTML=allChecks.map(c=>`<div class="seo-item ${c.cls}"><i class="${c.icon} flex-shrink-0 mt-0.5"></i><span class="text-xs">${escHtml(c.msg)}</span></div>`).join('')||'<div class="text-gray-600 text-xs">No checks available</div>';
-  $('seo-fields').innerHTML=[['Title',seo.title],['Description',seo.description],['Canonical',seo.canonical],['Robots',seo.robots],['OG Image',seo.ogImage],['H1 Count',seo.h1Count]].filter(([,v])=>v!==undefined&&v!=='').map(([k,v])=>metaRow(k,String(v))).join('');
-
-  // Security
-  const sec=data.security||{score:0,findings:[]};
-  scoreRing('sec-ring',sec.score);
-  const sevColor={high:'#ef4444',medium:'#f97316',low:'#facc15',pass:'#4ade80'};
-  $('sec-findings').innerHTML=(sec.findings||[]).map(f=>{const c=sevColor[f.severity]||'#9ca3af';return`<div class="seo-item ${f.severity==='pass'?'seo-pass':f.severity==='high'?'seo-error':'seo-warn'}"><i class="fas ${f.severity==='pass'?'fa-check-circle':'fa-shield-alt'} flex-shrink-0 mt-0.5" style="color:${c}"></i><div><div class="text-xs font-mono" style="color:${c}">[${f.type}]</div><div class="text-xs text-gray-400">${escHtml(f.msg)}</div></div></div>`}).join('')||'<div class="text-gray-600 text-xs">No findings</div>';
-
-  // A11y
-  const a11y=data.accessibility||{score:0,issues:[],warnings:[],passed:[]};
-  scoreRing('a11y-ring',a11y.score);
-  $('a11y-counts').textContent=`${a11y.passed?.length||0}P · ${a11y.warnings?.length||0}W · ${a11y.issues?.length||0}E`;
-  const a11yChecks=[...(a11y.issues||[]).map(i=>({...i,cls:'seo-error',icon:'fas fa-times-circle text-red-500'})),...(a11y.warnings||[]).map(w=>({...w,cls:'seo-warn',icon:'fas fa-exclamation-circle text-yellow-500'})),...(a11y.passed||[]).map(p=>({...p,cls:'seo-pass',icon:'fas fa-check-circle text-green-500'}))];
-  $('a11y-checks').innerHTML=a11yChecks.map(c=>`<div class="seo-item ${c.cls}"><i class="${c.icon} flex-shrink-0 mt-0.5"></i><span class="text-xs">${escHtml(c.msg)}</span></div>`).join('')||'<div class="text-gray-600 text-xs">No checks available</div>';
-
-  // Tech
-  const techs=data.technologies||[];
-  const techByCategory={};techs.forEach(t=>{if(!techByCategory[t.category])techByCategory[t.category]=[];techByCategory[t.category].push(t)});
-  $('tech-grid').innerHTML=techs.length?Object.entries(techByCategory).map(([cat,ts])=>`<div class="mb-4"><div class="text-xs text-gray-500 font-mono uppercase tracking-widest mb-2">${escHtml(cat)}</div><div class="flex flex-wrap gap-1">${ts.map(t=>`<div class="tech-chip"><i class="${t.icon}"></i>${escHtml(t.name)}<span class="text-gray-600 text-xs">${t.confidence}</span></div>`).join('')}</div></div>`).join(''):'<div class="text-gray-600 text-xs font-mono">No technologies detected</div>';
-
-  // Social
-  const sm=data.analysis?.socialMedia||{};
-  const smIcons={facebook:'fab fa-facebook #3b82f6',twitter:'fab fa-twitter #38bdf8',instagram:'fab fa-instagram #ec4899',linkedin:'fab fa-linkedin #2563eb',youtube:'fab fa-youtube #ef4444',tiktok:'fab fa-tiktok #e2e8f0',pinterest:'fab fa-pinterest #f43f5e'};
-  $('social-grid').innerHTML=Object.entries(sm).map(([p,n])=>{const[icon,color]=(smIcons[p]||'fas fa-share #9ca3af').split(' ');return`<div class="card-sm text-center"><i class="${icon} text-2xl mb-2" style="color:${color}"></i><div class="text-white font-black text-xl">${n}</div><div class="text-xs text-gray-500 font-mono capitalize mt-1">${p}</div></div>`}).join('')||'<div class="text-gray-600 text-xs">No social links</div>';
-
-  // Structure
-  const hdgs=data.analysis?.headings||{};
-  const maxHdg=Math.max(...Object.values(hdgs),1);
-  $('headings-content').innerHTML=Object.entries(hdgs).map(([h,n])=>progressRow(h.toUpperCase(),n,maxHdg,'#818cf8')).join('');
-  $('links-content').innerHTML=[['Internal Links',data.analysis?.internalLinks||0,'#4ade80'],['External Links',data.analysis?.externalLinks||0,'#facc15'],['Total Links',data.analysis?.totalLinks||0,'#60a5fa']].map(([l,v,c])=>kvRow(l,v,c)).join('');
-  const f=data.analysis?.forms||{};
-  $('forms-content').innerHTML=[['Forms',f.total,0,'#ef4444'],['Inputs',f.inputs,0,'#60a5fa'],['Textareas',f.textareas,0,'#c084fc'],['Selects',f.selects,0,'#facc15'],['Buttons',f.buttons,0,'#4ade80']].map(([l,v,,c])=>`<div class="card-sm text-center"><div class="text-2xl font-black" style="color:${c}">${v||0}</div><div class="text-xs text-gray-500 font-mono mt-1">${l}</div></div>`).join('');
-
-  // Performance
-  const p=data.analysis?.performance||{};
-  $('perf-content').innerHTML=[['Total Elements',p.totalElements,'#60a5fa'],['Inline Scripts',p.inlineScripts,'#facc15'],['External Scripts',p.externalScripts,'#f97316'],['Inline Styles',p.inlineStyles,'#c084fc'],['External Styles',p.externalStyles,'#818cf8'],['Word Count',(data.analysis?.wordCount||0).toLocaleString(),'#4ade80'],['Reading Time',`~${data.analysis?.readingTime||0} min`,'#4ade80']].map(([l,v,c])=>kvRow(l,v,c)).join('');
-  const resTypes=allResources.reduce((a,r)=>{a[r.type]=(a[r.type]||0)+1;return a},{});
-  const maxRes=Math.max(...Object.values(resTypes),1);
-  $('res-breakdown').innerHTML=Object.entries(resTypes).map(([t,n])=>progressRow(t,n,maxRes,'#dc2626')).join('');
-
-  // Cleaned
-  const ads=data.adsRemoved||{removed:[],trackers:[],totalCleaned:0};
-  $('ads-count').textContent=ads.removed?.length||0;$('trackers-count').textContent=ads.trackers?.length||0;$('cleaned-total').textContent=ads.totalCleaned||0;
-  $('ads-list').innerHTML=(ads.removed||[]).length?(ads.removed||[]).map(a=>`<div class="card-sm"><div class="badge badge-red mb-1">${escHtml(a.type)}</div><div class="text-xs text-gray-500 font-mono break-all">${escHtml(truncate(a.selector||a.url||a.snippet||'',80))}</div></div>`).join(''):'<div class="text-gray-600 text-xs font-mono">No ads detected/removed</div>';
-  $('trackers-list').innerHTML=(ads.trackers||[]).length?(ads.trackers||[]).map(t=>`<div class="card-sm"><div class="badge badge-yellow mb-1">tracker</div><div class="text-xs text-gray-500 font-mono break-all">${escHtml(truncate(t.url||'',80))}</div></div>`).join(''):'<div class="text-gray-600 text-xs font-mono">No trackers detected</div>';
-
-  // Bot / WAF
-  const bp=data.botProtection||{signals:[],bypassScore:'Unknown'};
-  const bypassColors={'Easy':'#4ade80','Moderate':'#facc15','Hard':'#f97316','Very Hard':'#ef4444'};
-  const bypassIcons={'Easy':'🟢','Moderate':'🟡','Hard':'🟠','Very Hard':'🔴'};
-  $('bot-icon').textContent=bypassIcons[bp.bypassScore]||'⚪';
-  $('bot-bypass').textContent=bp.bypassScore||'Unknown';
-  $('bot-bypass').style.color=bypassColors[bp.bypassScore]||'#9ca3af';
-  $('bot-badges').innerHTML=[bp.hasWAF&&'<span class="badge badge-red">WAF</span>',bp.hasCaptcha&&'<span class="badge badge-yellow">CAPTCHA</span>',bp.hasCDN&&'<span class="badge badge-blue">CDN</span>'].filter(Boolean).join('')||'<span class="badge badge-gray">No protection detected</span>';
-  const sevMap={high:'seo-error',medium:'seo-warn',low:'seo-warn',info:'seo-pass'};
-  const sevIcon={high:'fas fa-times-circle text-red-500',medium:'fas fa-exclamation-circle text-yellow-500',low:'fas fa-info-circle text-blue-400',info:'fas fa-check-circle text-green-500'};
-  $('bot-signals').innerHTML=(bp.signals||[]).length?(bp.signals||[]).map(s=>`<div class="seo-item ${sevMap[s.severity]||'seo-pass'}"><i class="${sevIcon[s.severity]||sevIcon.info} flex-shrink-0 mt-0.5"></i><div><div class="flex items-center gap-2"><i class="${s.icon||'fas fa-shield'} text-xs text-gray-500"></i><span class="text-xs font-bold text-white">${escHtml(s.name)}</span><span class="badge badge-gray">${escHtml(s.category)}</span></div><div class="text-xs text-gray-400 mt-0.5">${escHtml(s.detail||'')}</div></div></div>`).join(''):'<div class="text-gray-600 text-xs font-mono py-4">No bot protection signals detected — site may be freely crawlable</div>';
-  const rh=data.responseHeaders||{};$('bot-headers').innerHTML=Object.entries(rh).map(([k,v])=>`<div class="card-sm"><div class="text-xs text-gray-600 font-mono mb-0.5 uppercase tracking-wider">${escHtml(k)}</div><div class="text-xs text-gray-300 break-all font-mono">${escHtml(truncate(String(v),80))}</div></div>`).join('')||'<div class="text-gray-600 text-xs">No headers</div>';
-
-  // AI Detection
-  const ai=data.aiContent||{signals:[],likelihoodScore:0,likelyAI:false};
-  scoreRing('ai-ring',ai.likelihoodScore,ai.likelihoodScore>=60?'#c084fc':ai.likelihoodScore>=30?'#facc15':'#4ade80');
-  $('ai-verdict').textContent=ai.likelyAI?'Likely AI-Generated':'Likely Human-Written';
-  $('ai-verdict').style.color=ai.likelyAI?'#c084fc':'#4ade80';
-  $('ai-signals').innerHTML=(ai.signals||[]).length?(ai.signals||[]).map(s=>`<div class="seo-item seo-warn"><i class="fas fa-brain text-purple-500 flex-shrink-0 mt-0.5"></i><div><span class="badge badge-purple mb-1">${escHtml(s.type)}</span><div class="text-xs text-gray-300">${escHtml(s.msg)}</div></div></div>`).join(''):'<div class="text-gray-600 text-xs font-mono py-4">No AI content signals detected</div>';
-
-  // Source
-  $('code-content').textContent=data.contents||'';
-  try{hljs.highlightElement($('code-content'))}catch(e){}
-
-  // Preview
-  $('preview-frame').src=`${apiBase}/api/proxy?url=${encodeURIComponent(url)}`;
-
-  // Show overview
-  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.page-content').forEach(p=>p.classList.remove('active'));
-  qs('[data-page=overview]').classList.add('active');$('overview-page').classList.add('active');
+async function runOptimise(){
+  if(!curUrl){$('mg').innerHTML='<i class="fas fa-exclamation-triangle text-red-500 mr-2"></i><span class="text-red-400">Analyze a URL first</span>';return}
+  const btn=$('og-btn');btn.innerHTML='<i class="fas fa-spinner fa-spin mr-1"></i>Processing...';btn.disabled=true;
+  $('og-status').classList.add('hidden');$('og-preview-wrap').classList.add('hidden');$('og-copy').classList.add('hidden');$('og-dl').classList.add('hidden');$('og-insp').classList.add('hidden');
+  try{
+    const opts={removeAds:$('cb-rads').checked,removeTrackers:$('cb-rtr').checked,removeMetaTags:$('cb-rmt').checked,removeComments:$('cb-rcm').checked,removeInlineStyles:$('cb-ris').checked,removeScripts:$('cb-rsc').checked,removeIframes:$('cb-rif').checked,addEruda:$('cb-aer').checked,addAntiRedirect:$('cb-aar').checked,addFloatingInspector:$('cb-afi').checked,rewriteLinks:$('cb-rl').checked,addViewportMeta:$('cb-avm').checked};
+    const r=await fetch(`${aB}/api/optimize`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:curUrl,options:opts})});
+    if(!r.ok)throw new Error(`HTTP ${r.status}`);
+    const data=await r.json();if(!data.success)throw new Error(data.error||'Failed');
+    ogHtml=data.html;
+    $('og-s1').textContent=fB(data.originalSize);$('og-s2').textContent=fB(data.optimizedSize);$('og-sv').textContent=`-${data.savedPercent}`;
+    const typeIcon={ads:'og-rm',trackers:'og-bl',meta:'og-rm',comments:'og-rm',styles:'og-rm',scripts:'og-rm',iframes:'og-rm',inject:'og-ok',security:'og-in'};
+    $('og-log-list').innerHTML=(data.log||[]).map(l=>`<div class="og-log ${typeIcon[l.type]||'og-in'}"><i class="fas ${l.type.startsWith('remove')||['ads','trackers','meta','comments','styles','scripts','iframes'].includes(l.type)?'fa-minus-circle text-orange-400':'fa-plus-circle text-green-400'} mr-1"></i>${eH(l.msg)}</div>`).join('')||'<div class="og-log og-in">No transformations applied</div>';
+    $('og-status').classList.remove('hidden');
+    $('og-code').textContent=ogHtml;try{hljs.highlightElement($('og-code'))}catch(e){}
+    const blob=new Blob([ogHtml],{type:'text/html'});const bURL=URL.createObjectURL(blob);$('og-frame').src=bURL;
+    $('og-preview-wrap').classList.remove('hidden');
+    $('og-copy').classList.remove('hidden');$('og-dl').classList.remove('hidden');$('og-insp').classList.remove('hidden');
+    $('og-copy').onclick=()=>cT(ogHtml,$('og-copy'));
+    $('og-dl').onclick=()=>{const a=document.createElement('a');a.href=bURL;a.download=`optimised-${new URL(curUrl).hostname}.html`;a.click()};
+    $('og-insp').onclick=()=>window.open(`${aB}/api/inject-inspector?url=${encodeURIComponent(curUrl)}`,'_blank');
+  }catch(err){$('og-log-list').innerHTML=`<div class="og-log" style="color:#ef4444"><i class="fas fa-exclamation-triangle mr-1"></i>${eH(err.message)}</div>`;$('og-status').classList.remove('hidden');}
+  finally{btn.innerHTML='<i class="fas fa-cog mr-1"></i>Optimise Now';btn.disabled=false}
 }
 
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeOverlay('media-overlay');closeOverlay('doc-overlay')}});
+function rAll(data,url){
+  allRes=data.analysis?.resources||[];
+  $('mg').innerHTML=`<span class="text-green-400"><i class="fas fa-check-circle mr-2"></i>Analysis complete — ${allRes.length} resources</span>`;
+  $('pn').classList.remove('hidden');$('rs').classList.remove('hidden');
+
+  $('sc2').innerHTML=[sCard('fas fa-cubes','#ef4444','Resources',allRes.length),sCard('fas fa-file-word','#60a5fa','Words',(data.analysis?.wordCount||0).toLocaleString()),sCard('fas fa-clock','#facc15','Response',`${data.responseTime}ms`),sCard('fas fa-broom','#4ade80','Cleaned',data.adsRemoved?.totalCleaned||0)].join('');
+  $('os').innerHTML=kR('HTTP',`${data.status} ${data.statusText}`,'#4ade80')+kR('Content-Type',tr2(data.contentType,35))+kR('Read Time',`~${data.analysis?.readingTime||0} min`,'#60a5fa');
+  $('oz').innerHTML=kR('Original',fB(data.size?.original))+kR('Processed',fB(data.size?.processed))+kR('Saved',data.size?.compression,'#4ade80');
+  $('ot').innerHTML=kR('Response',`${data.responseTime}ms`,'#facc15')+kR('Timestamp',new Date(data.timestamp).toLocaleTimeString())+kR('Request ID',data.requestId?.slice(0,8),'#c084fc');
+
+  const vd=data.visualData||{};const vis=[];
+  if(vd.screenshot)vis.push(`<div class="cs cursor-pointer" onclick="oP('${eH(vd.screenshot)}','image','Screenshot')"><div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider flex items-center justify-between">Screenshot <span class="bg bgr">expand</span></div><img src="${eH(vd.screenshot)}" class="w-full rounded border border-gray-800 max-h-48 object-cover" loading=lazy onerror="this.parentElement.style.display='none'"></div>`);
+  if(vd.ogImage)vis.push(`<div class="cs cursor-pointer" onclick="oP('${eH(vd.ogImage)}','image','OG Image')"><div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider flex items-center justify-between">OG Image <span class="bg bgr">expand</span></div><img src="${eH(vd.ogImage)}" class="w-full rounded border border-gray-800 max-h-40 object-cover" loading=lazy onerror="this.parentElement.style.display='none'"></div>`);
+  if(vd.logo)vis.push(`<div class="cs cursor-pointer" onclick="oP('${eH(vd.logo)}','image','Logo')"><div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider">Logo</div><img src="${eH(vd.logo)}" class="max-h-16 object-contain" loading=lazy onerror="this.parentElement.style.display='none'"></div>`);
+  if(vd.favicon)vis.push(`<div class="cs"><div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider">Favicon</div><div class="flex items-center gap-3"><img src="${eH(vd.favicon)}" class="w-8 h-8 object-contain" loading=lazy onerror="this.style.display='none'"><span class="text-xs text-gray-500 font-mono break-all">${eH(tr2(vd.favicon,50))}</span></div></div>`);
+  if(vd.palette?.length)vis.push(`<div class="cs"><div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider">Colors</div><div class="flex flex-wrap gap-2">${vd.palette.map(c=>`<div class="flex flex-col items-center gap-1"><div class="w-8 h-8 rounded border border-gray-700 cursor-pointer hover:scale-110 transition-transform" style="background:${c}" title="${c}" onclick="cT('${c}')"></div><span class="text-xs text-gray-600 font-mono">${c}</span></div>`).join('')}</div></div>`);
+  $('vc').innerHTML=vis.join('')||'<div class="col-span-full text-center text-gray-600 py-8 text-xs">No visual data</div>';
+
+  const md=data.metadata||{};
+  $('mg2').innerHTML=Object.entries(md).filter(([,v])=>v).map(([k,v])=>mRow(k.replace(/([A-Z])/g,' $1'),v)).join('')||'<div class="text-gray-600 text-xs">No metadata</div>';
+
+  rRes(allRes);
+
+  const{media=[],iframes=[]}=data.analysis||{};
+  const videos=media.filter(m=>m.type==='video'),audios=media.filter(m=>m.type==='audio');
+  $('mv').innerHTML=videos.length?videos.map(v=>{const d=v.url.length>55?v.url.slice(0,28)+'…'+v.url.slice(-22):v.url;return`<div class="mc cursor-pointer" onclick="oP('${eH(v.url)}','video','${eH(tr2(v.url,40))}')"><div class="bg-black aspect-video flex items-center justify-center relative overflow-hidden">${v.poster?`<img src="${eH(v.poster)}" class="w-full h-full object-cover absolute inset-0" loading=lazy>`:''}<div class="absolute inset-0 flex items-center justify-center bg-black/40 hover:bg-black/20 transition-colors"><div class="w-12 h-12 bg-red-700/90 rounded-full flex items-center justify-center shadow-lg"><i class="fas fa-play text-white text-sm ml-0.5"></i></div></div></div><div class="p-2"><div class="text-xs text-gray-400 font-mono truncate">${eH(d)}</div></div></div>`}).join(''):'<div class="text-gray-600 text-xs col-span-full py-4">No video</div>';
+  $('ma').innerHTML=audios.length?audios.map(a=>{const d=a.url.length>55?a.url.slice(0,28)+'…'+a.url.slice(-22):a.url;return`<div class="mc cursor-pointer p-3" onclick="oP('${eH(a.url)}','audio','${eH(tr2(a.url,40))}')"><div class="flex items-center gap-3"><div class="w-10 h-10 bg-purple-900/40 rounded-full flex items-center justify-center"><i class="fas fa-music text-purple-400"></i></div><div class="text-xs text-gray-400 font-mono truncate">${eH(d)}</div></div></div>`}).join(''):'<div class="text-gray-600 text-xs col-span-full py-4">No audio</div>';
+  $('mi').innerHTML=iframes.length?iframes.map(f=>{const tg=f.isYoutube?'<span class="bg br2 ml-1">YouTube</span>':f.isVimeo?'<span class="bg bb ml-1">Vimeo</span>':f.isMap?'<span class="bg bg2 ml-1">Map</span>':'';const d=f.url.length>55?f.url.slice(0,28)+'…'+f.url.slice(-22):f.url;return`<div class="mc cursor-pointer p-3" onclick="oP('${eH(f.url)}','embed','${eH(tr2(f.title||f.url,40))}')"><div class="flex items-center gap-3"><div class="w-10 h-10 bg-blue-900/40 rounded-full flex items-center justify-center"><i class="fas fa-window-restore text-blue-400"></i></div><div><div class="text-xs flex items-center gap-1">${tg}</div><div class="text-xs text-gray-500 font-mono mt-0.5 truncate">${eH(d)}</div></div></div></div>`}).join(''):'<div class="text-gray-600 text-xs col-span-full">No iframes</div>';
+
+  const seo=data.seo||{score:0,issues:[],warnings:[],passed:[]};
+  sRing('sr2',seo.score);$('sct').textContent=`${seo.passed?.length||0}P · ${seo.warnings?.length||0}W · ${seo.issues?.length||0}E`;
+  const ac=[...(seo.issues||[]).map(i=>({...i,cls:'se',icon:'fas fa-times-circle text-red-500'})),...(seo.warnings||[]).map(w=>({...w,cls:'sw',icon:'fas fa-exclamation-circle text-yellow-500'})),...(seo.passed||[]).map(p=>({...p,cls:'sp',icon:'fas fa-check-circle text-green-500'}))];
+  $('sch').innerHTML=ac.map(c=>`<div class="si ${c.cls}"><i class="${c.icon} flex-shrink-0 mt-0.5"></i><span class="text-xs">${eH(c.msg)}</span></div>`).join('')||'<div class="text-gray-600 text-xs">No checks</div>';
+  $('sf').innerHTML=[['Title',seo.title],['Description',seo.description],['Canonical',seo.canonical],['Robots',seo.robots],['OG Image',seo.ogImage],['H1 Count',seo.h1Count]].filter(([,v])=>v!==undefined&&v!=='').map(([k,v])=>mRow(k,String(v))).join('');
+
+  const sec=data.security||{score:0,findings:[]};sRing('secr',sec.score);
+  const sev={high:'#ef4444',medium:'#f97316',low:'#facc15',pass:'#4ade80'};
+  $('sfi').innerHTML=(sec.findings||[]).map(f=>{const c=sev[f.severity]||'#9ca3af';return`<div class="si ${f.severity==='pass'?'sp':f.severity==='high'?'se':'sw'}"><i class="fas ${f.severity==='pass'?'fa-check-circle':'fa-shield-alt'} flex-shrink-0 mt-0.5" style="color:${c}"></i><div><div class="text-xs font-mono" style="color:${c}">[${f.type}]</div><div class="text-xs text-gray-400">${eH(f.msg)}</div></div></div>`}).join('')||'<div class="text-gray-600 text-xs">No findings</div>';
+
+  const a11y=data.accessibility||{score:0,issues:[],warnings:[],passed:[]};sRing('ar2',a11y.score);$('ac2').textContent=`${a11y.passed?.length||0}P · ${a11y.warnings?.length||0}W · ${a11y.issues?.length||0}E`;
+  const a11c=[...(a11y.issues||[]).map(i=>({...i,cls:'se',icon:'fas fa-times-circle text-red-500'})),...(a11y.warnings||[]).map(w=>({...w,cls:'sw',icon:'fas fa-exclamation-circle text-yellow-500'})),...(a11y.passed||[]).map(p=>({...p,cls:'sp',icon:'fas fa-check-circle text-green-500'}))];
+  $('ach').innerHTML=a11c.map(c=>`<div class="si ${c.cls}"><i class="${c.icon} flex-shrink-0 mt-0.5"></i><span class="text-xs">${eH(c.msg)}</span></div>`).join('')||'<div class="text-gray-600 text-xs">No checks</div>';
+
+  const techs=data.technologies||{};const tByCat={};techs.forEach&&techs.forEach(t=>{if(!tByCat[t.category])tByCat[t.category]=[];tByCat[t.category].push(t)});
+  $('tg').innerHTML=Object.keys(tByCat).length?Object.entries(tByCat).map(([cat,ts])=>`<div class="mb-4"><div class="text-xs text-gray-500 font-mono uppercase tracking-widest mb-2">${eH(cat)}</div><div class="flex flex-wrap gap-1">${ts.map(t=>`<div class="tc"><i class="${t.icon}"></i>${eH(t.name)}<span class="text-gray-600 text-xs">${t.confidence}</span></div>`).join('')}</div></div>`).join(''):'<div class="text-gray-600 text-xs font-mono">No tech detected</div>';
+
+  const sm=data.analysis?.socialMedia||{};
+  const smI={facebook:'fab fa-facebook #3b82f6',twitter:'fab fa-twitter #38bdf8',instagram:'fab fa-instagram #ec4899',linkedin:'fab fa-linkedin #2563eb',youtube:'fab fa-youtube #ef4444',tiktok:'fab fa-tiktok #e2e8f0',pinterest:'fab fa-pinterest #f43f5e'};
+  $('sg').innerHTML=Object.entries(sm).map(([p,n])=>{const[ic,co]=(smI[p]||'fas fa-share #9ca3af').split(' ');return`<div class="cs text-center"><i class="${ic} text-2xl mb-2" style="color:${co}"></i><div class="text-white font-black text-xl">${n}</div><div class="text-xs text-gray-500 font-mono capitalize mt-1">${p}</div></div>`}).join('')||'<div class="text-gray-600 text-xs">No social</div>';
+
+  const hdgs=data.analysis?.headings||{};const mxH=Math.max(...Object.values(hdgs),1);
+  $('hc').innerHTML=Object.entries(hdgs).map(([h,n])=>pR(h.toUpperCase(),n,mxH,'#818cf8')).join('');
+  $('lc').innerHTML=[['Internal',data.analysis?.internalLinks||0,'#4ade80'],['External',data.analysis?.externalLinks||0,'#facc15'],['Total',data.analysis?.totalLinks||0,'#60a5fa']].map(([l,v,c])=>kR(l,v,c)).join('');
+  const f=data.analysis?.forms||{};$('fc').innerHTML=[['Forms',f.total,'#ef4444'],['Inputs',f.inputs,'#60a5fa'],['Textareas',f.textareas,'#c084fc'],['Selects',f.selects,'#facc15'],['Buttons',f.buttons,'#4ade80']].map(([l,v,c])=>`<div class="cs text-center"><div class="text-2xl font-black" style="color:${c}">${v||0}</div><div class="text-xs text-gray-500 font-mono mt-1">${l}</div></div>`).join('');
+
+  const p2=data.analysis?.performance||{};
+  $('pc2').innerHTML=[['Total Elements',p2.totalElements,'#60a5fa'],['Inline Scripts',p2.inlineScripts,'#facc15'],['External Scripts',p2.externalScripts,'#f97316'],['Inline Styles',p2.inlineStyles,'#c084fc'],['External Styles',p2.externalStyles,'#818cf8'],['Words',(data.analysis?.wordCount||0).toLocaleString(),'#4ade80'],['Reading Time',`~${data.analysis?.readingTime||0} min`,'#4ade80']].map(([l,v,c])=>kR(l,v,c)).join('');
+  const rT=allRes.reduce((a,r)=>{a[r.type]=(a[r.type]||0)+1;return a},{});const mxR=Math.max(...Object.values(rT),1);
+  $('rbd').innerHTML=Object.entries(rT).map(([t,n])=>pR(t,n,mxR,'#dc2626')).join('');
+
+  const ads=data.adsRemoved||{removed:[],trackers:[],totalCleaned:0};
+  $('adc').textContent=ads.removed?.length||0;$('trc').textContent=ads.trackers?.length||0;$('ctc').textContent=ads.totalCleaned||0;
+  $('al').innerHTML=(ads.removed||[]).length?(ads.removed||[]).map(a=>`<div class="cs"><div class="bg br2 mb-1">${eH(a.type)}</div><div class="text-xs text-gray-500 font-mono break-all">${eH(tr2(a.selector||a.url||a.snippet||'',80))}</div></div>`).join(''):'<div class="text-gray-600 text-xs">None</div>';
+  $('tl').innerHTML=(ads.trackers||[]).length?(ads.trackers||[]).map(t=>`<div class="cs"><div class="bg by mb-1">tracker</div><div class="text-xs text-gray-500 font-mono break-all">${eH(tr2(t.url||'',80))}</div></div>`).join(''):'<div class="text-gray-600 text-xs">None</div>';
+
+  const bp=data.botProtection||{signals:[],bypassScore:'Unknown'};
+  const bC={'Easy':'#4ade80','Moderate':'#facc15','Hard':'#f97316','Very Hard':'#ef4444'};
+  const bI={'Easy':'🟢','Moderate':'🟡','Hard':'🟠','Very Hard':'🔴'};
+  $('bi').textContent=bI[bp.bypassScore]||'⚪';$('bby').textContent=bp.bypassScore||'Unknown';$('bby').style.color=bC[bp.bypassScore]||'#9ca3af';
+  $('bbg').innerHTML=[bp.hasWAF&&'<span class="bg br2">WAF</span>',bp.hasCaptcha&&'<span class="bg by">CAPTCHA</span>',bp.hasCDN&&'<span class="bg bb">CDN</span>'].filter(Boolean).join('')||'<span class="bg bgr">No protection</span>';
+  const sM={high:'se',medium:'sw',low:'sw',info:'sp'};const sI={high:'fas fa-times-circle text-red-500',medium:'fas fa-exclamation-circle text-yellow-500',low:'fas fa-info-circle text-blue-400',info:'fas fa-check-circle text-green-500'};
+  $('bsi').innerHTML=(bp.signals||[]).length?(bp.signals||[]).map(s=>`<div class="si ${sM[s.severity]||'sp'}"><i class="${sI[s.severity]||sI.info} flex-shrink-0 mt-0.5"></i><div><div class="flex items-center gap-2"><i class="${s.icon||'fas fa-shield'} text-xs text-gray-500"></i><span class="text-xs font-bold text-white">${eH(s.name)}</span><span class="bg bgr">${eH(s.category)}</span></div><div class="text-xs text-gray-400 mt-0.5">${eH(s.detail||'')}</div></div></div>`).join(''):'<div class="text-gray-600 text-xs py-4">No protection detected</div>';
+  const rh=data.responseHeaders||{};$('bh').innerHTML=Object.entries(rh).map(([k,v])=>`<div class="cs"><div class="text-xs text-gray-600 font-mono mb-0.5 uppercase">${eH(k)}</div><div class="text-xs text-gray-300 break-all font-mono">${eH(tr2(String(v),80))}</div></div>`).join('')||'<div class="text-gray-600 text-xs">No headers</div>';
+
+  const ai=data.aiContent||{signals:[],likelihoodScore:0,likelyAI:false};
+  sRing('aiR',ai.likelihoodScore,ai.likelihoodScore>=60?'#c084fc':ai.likelihoodScore>=30?'#facc15':'#4ade80');
+  $('aiV').textContent=ai.likelyAI?'Likely AI-Generated':'Likely Human-Written';$('aiV').style.color=ai.likelyAI?'#c084fc':'#4ade80';
+  $('aiS').innerHTML=(ai.signals||[]).length?(ai.signals||[]).map(s=>`<div class="si sw"><i class="fas fa-brain text-purple-500 flex-shrink-0 mt-0.5"></i><div><span class="bg bp mb-1">${eH(s.type)}</span><div class="text-xs text-gray-300">${eH(s.msg)}</div></div></div>`).join(''):'<div class="text-gray-600 text-xs py-4">No AI signals</div>';
+
+  $('cc').textContent=data.contents||'';try{hljs.highlightElement($('cc'))}catch(e){}
+  $('pf2').src=`${aB}/api/proxy?url=${encodeURIComponent(url)}`;
+
+  document.querySelectorAll('.nt').forEach(t=>t.classList.remove('ac'));document.querySelectorAll('.pc').forEach(p=>p.classList.remove('ac'));
+  document.querySelector('[data-p=overview]').classList.add('ac');$('overview-page').classList.add('ac');
+}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){cO('mo');cO('do2')}});
 </script>
 </body></html>
