@@ -1,4 +1,4 @@
-const e=require('express'),a=require('axios'),c=require('cheerio'),r=require('cors'),{URL:U}=require('url'),x=require('crypto'),app=e(),P=process.env.PORT||3000;
+const e=require('express'),axios=require('axios'),c=require('cheerio'),r=require('cors'),{URL:U}=require('url'),x=require('crypto'),app=e(),P=process.env.PORT||3000;
 app.use(r()),app.use(e.json()),app.use(e.static('public'));
 const SE = [
   // Web & Logic
