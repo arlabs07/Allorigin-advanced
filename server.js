@@ -1,6 +1,33 @@
 const e=require('express'),a=require('axios'),c=require('cheerio'),r=require('cors'),{URL:U}=require('url'),x=require('crypto'),app=e(),P=process.env.PORT||3000;
 app.use(r()),app.use(e.json()),app.use(e.static('public'));
-const SE=['.html','.htm','.php','.asp','.aspx','.jsp','.css','.js','.json','.png','.jpg','.jpeg','.gif','.svg','.webp','.ico','.mp4','.mp3','.avi','.mov','.wav','.ogg','.pdf','.doc','.docx','.txt','.xml','.woff','.woff2','.ttf','.eot'];
+const SE = [
+  // Web & Logic
+  '.html', '.htm', '.xhtml', '.php', '.asp', '.aspx', '.jsp', '.css', '.scss', '.sass', '.less', '.js', '.mjs', '.jsx', '.ts', '.tsx', '.json', '.xml', '.yaml', '.yml', '.toml',
+  // Images
+  '.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp', '.ico', '.bmp', '.tiff', '.tif', '.heic', '.avif', '.psd', '.ai', '.eps', '.indd', '.raw',
+  // Video
+  '.mp4', '.m4v', '.m3u8', '.mov', '.avi', '.wmv', '.flv', '.mkv', '.webm', '.ogv', '.3gp', '.vob', '.mts', '.m2ts', '.rm', '.rmvb',
+  // Audio
+  '.mp3', '.wav', '.ogg', '.m4a', '.flac', '.aac', '.wma', '.aiff', '.mid', '.midi', '.opus', '.mka', '.amr', '.mpc', '.voc',
+  // Documents & eBooks
+  '.pdf', '.doc', '.docx', '.odt', '.rtf', '.txt', '.md', '.tex', '.epub', '.mobi', '.pages', '.wpd', '.wks',
+  // Spreadsheets & Presentations
+  '.xls', '.xlsx', '.xlsm', '.csv', '.ods', '.numbers', '.ppt', '.pptx', '.odp', '.key', '.pps',
+  // Programming Source
+  '.c', '.h', '.cpp', '.hpp', '.cs', '.java', '.py', '.rb', '.go', '.rs', '.swift', '.kt', '.dart', '.lua', '.pl', '.pm', '.sh', '.bat', '.ps1', '.r', '.m', '.scala', '.erl', '.ex',
+  // Data & Database
+  '.sql', '.sqlite', '.db', '.mdb', '.accdb', '.tsv', '.graphql', '.dbf', '.log', '.bak', '.config', '.ini', '.env', '.properties',
+  // Archives & Compression
+  '.zip', '.rar', '.7z', '.tar', '.gz', '.tgz', '.bz2', '.xz', '.iso', '.dmg', '.pkg', '.deb', '.rpm', '.cab', '.z', '.ace', '.arj',
+  // Executables & System
+  '.exe', '.msi', '.bin', '.com', '.dll', '.so', '.o', '.obj', '.elf', '.apk', '.ipa', '.app', '.sys', '.cur', '.ani', '.icl',
+  // Fonts
+  '.woff', '.woff2', '.ttf', '.eot', '.otf', '.fon', '.dfont',
+  // 3D & CAD
+  '.obj', '.fbx', '.stl', '.dae', '.blend', '.3ds', '.max', '.dwg', '.dxf', '.step', '.stp', '.iges', '.igs',
+  // Scientific & Specialized
+  '.ipynb', '.mat', '.hdf5', '.nc', '.fits', '.unity', '.unitypackage', '.fnt', '.gam', '.sav', '.rom'
+];
 const SH=['content-security-policy','x-frame-options','x-content-type-options','strict-transport-security','referrer-policy','permissions-policy','feature-policy','x-xss-protection'];
 const AS=['[class*="advert"]','[class*="adsense"]','[class*="ad-unit"]','[class*="ad_unit"]','[id*="adsense"]','[id*="advert"]','[class*="banner-ad"]','[class*="ad-banner"]','[id*="ad-banner"]','[class*="ads-container"]','[id*="ads-container"]','[class*="advertisement"]','[id*="advertisement"]','[class*="sponsored"]','[class*="dfp-ad"]','[id*="dfp"]','[class*="google-ad"]','[id*="google_ads"]','[class*="outbrain"]','[class*="taboola"]','[id*="taboola"]','[class*="mgid"]','[class*="revcontent"]','[class*="zergnet"]','[class*="criteo"]','[class*="rubicon"]','[class*="openx"]','[class*="pubmatic"]','[class*="appnexus"]','[class*="ad-slot"]','[id*="ad-slot"]','[data-ad]','[data-adunit]','.adsbox','.ad-wrapper','ins.adsbygoogle','[class*="popup-ad"]','[class*="interstitial"]','[class*="ad-overlay"]','[class*="sticky-ad"]','[class*="float-ad"]'];
 const TP=[/google-analytics\.com/,/googletagmanager\.com/,/doubleclick\.net/,/facebook\.net\/en_US\/fbevents/,/twitter\.com\/i\/adsct/,/bat\.bing\.com/,/analytics\.twitter\.com/,/connect\.facebook\.net/,/pixel\.facebook\.com/,/hotjar\.com/,/clarity\.ms/,/mouseflow\.com/,/fullstory\.com/,/mixpanel\.com/,/segment\.io/,/heap\.io/,/intercom\.io/,/drift\.com/,/hubspot\.com\/hs-script/,/scorecard\.com/,/quantserve\.com/,/scorecardresearch\.com/,/comscore\.com/,/omtrdc\.net/,/2o7\.net/,/atdmt\.com/,/adnxs\.com/,/serving-sys\.com/,/advertising\.com/];
